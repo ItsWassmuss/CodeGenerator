@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DDC2D4EC-7C74-463E-9F0D-591FDF32B9A5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CodeGenerator</RootNamespace>
+    <AssemblyName>CodeGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Content\ImageButton.cs" />
+    <Compile Include="Content\OfficeStyleWindow.cs" />
+    <Compile Include="Content\RotatedDataGrid.cs" />
+    <Compile Include="Content\TitleBar.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Model\AdminCreate.cs" />
+    <Compile Include="Model\AdminEdit.cs" />
+    <Compile Include="Model\AdminDetails.cs" />
+    <Compile Include="Model\AdminOlIndexList.cs" />
+    <Compile Include="Model\AdminOlCreate.cs" />
+    <Compile Include="Model\AdminOlEdit.cs" />
+    <Compile Include="Model\IAdminIndexBaseViewModel.cs" />
+    <Compile Include="Model\IAdminIndexList.cs" />
+    <Compile Include="Model\AdminIndexList.cs" />
+    <Compile Include="Model\IAdminIndexListBaseViewModel.cs" />
+    <Compile Include="Model\Phone.cs" />
+    <Compile Include="Model\Range.cs" />
+    <Compile Include="Model\RegularExpression.cs" />
+    <Compile Include="Model\Required.cs" />
+    <Compile Include="Model\StringLength.cs" />
+    <Compile Include="Model\Views\AdminCreateView.cs" />
+    <Compile Include="Model\Views\AdminIndexView.cs" />
+    <Compile Include="SelectionField.xaml.cs">
+      <DependentUpon>SelectionField.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectionTable.xaml.cs">
+      <DependentUpon>SelectionTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SqlDatabaseAdapter.cs" />
+    <Compile Include="temp\ArticleAdminCreateViewModel.cs" />
+    <Compile Include="temp\ArticleAdminDetailsViewModel.cs" />
+    <Compile Include="temp\ArticleAdminIndexViewModel.cs" />
+    <Compile Include="temp\ArticleAdminOlCreateViewModel.cs" />
+    <Compile Include="temp\ArticleAdminOlIndexListViewModel.cs" />
+    <Compile Include="temp\ArticleAdminOlIndexViewModel.cs" />
+    <Page Include="Content\ButtonDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\ButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\ComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\CommonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\DataGridStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\MyOfficeStyleWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\TextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="MVC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\DataGridStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectionField.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectionTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MVC.xaml.cs">
+      <DependentUpon>MVC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Content\BYekan.eot" />
+    <Resource Include="Content\BYekan.ttf" />
+    <None Include="Content\BYekan.woff" />
+    <None Include="Content\Images\Thumbs.db" />
+    <None Include="Content\PaymentCash.mrt" />
+    <None Include="Content\Periods.mrt" />
+    <None Include="Content\ReceiveCash.mrt" />
+    <None Include="Content\RestartSqlExpress.bat" />
+    <None Include="Content\Weblogma_Yekan.eot" />
+    <Resource Include="Content\Weblogma_Yekan.otf" />
+    <Resource Include="Content\Weblogma_Yekan.ttf" />
+    <None Include="Content\Weblogma_Yekan.woff" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Images\AccountBalance.png" />
+    <Resource Include="Content\Images\AddStudentIcon.png" />
+    <Resource Include="Content\Images\AddTeacherIcon.png" />
+    <Resource Include="Content\Images\AddTeacherPresent.png" />
+    <Resource Include="Content\Images\aw.jpg" />
+    <Resource Include="Content\Images\BankReport.png" />
+    <Resource Include="Content\Images\BluePlayMovie.png" />
+    <Resource Include="Content\Images\CalenderIcon.png" />
+    <Resource Include="Content\Images\CashPaymentIcon.png" />
+    <Resource Include="Content\Images\CashTransport.png" />
+    <Resource Include="Content\Images\CashTransportList.png" />
+    <Resource Include="Content\Images\Checkanim.png" />
+    <Resource Include="Content\Images\CheckBoxHover.png" />
+    <Resource Include="Content\Images\CheckBoxTrue.png" />
+    <Resource Include="Content\Images\Checked.png" />
+    <Resource Include="Content\Images\CheckedBlue.png" />
+    <Resource Include="Content\Images\CheckedHover.png" />
+    <Resource Include="Content\Images\CheckMarckpng.png" />
+    <Resource Include="Content\Images\chequeIcon.png" />
+    <Resource Include="Content\Images\CloseButton.gif" />
+    <Resource Include="Content\Images\CloseButton.png" />
+    <Resource Include="Content\Images\CloseButton2.png" />
+    <Resource Include="Content\Images\closehot_n.PNG" />
+    <Resource Include="Content\Images\CloseIcon.png" />
+    <Resource Include="Content\Images\closepressed_n.PNG" />
+    <Resource Include="Content\Images\close_n.PNG" />
+    <Resource Include="Content\Images\ContractIcon.png" />
+    <Resource Include="Content\Images\CostListIcon.png" />
+    <Resource Include="Content\Images\CostManagementIcon.png" />
+    <Resource Include="Content\Images\CostPayIcon.png" />
+    <Resource Include="Content\Images\CourseListIcon.png" />
+    <Resource Include="Content\Images\Danger.png" />
+    <Resource Include="Content\Images\DatePiker.png" />
+    <Resource Include="Content\Images\defaultClose.png" />
+    <Resource Include="Content\Images\defaultCloseHover.png" />
+    <Resource Include="Content\Images\defaultCloseOverly.png" />
+    <Resource Include="Content\Images\defaultClosePres.png" />
+    <Resource Include="Content\Images\DefaultMax.png" />
+    <Resource Include="Content\Images\defaultMaxHover.png" />
+    <Resource Include="Content\Images\defaultMaxPres.png" />
+    <Resource Include="Content\Images\defaultMin.png" />
+    <Resource Include="Content\Images\defaultMinHover.png" />
+    <Resource Include="Content\Images\defaultMinPres.png" />
+    <Resource Include="Content\Images\DefaultUserImage.gif" />
+    <Resource Include="Content\Images\DeleteFilterIcon.png" />
+    <Resource Include="Content\Images\DeleteFilterIconHover.png" />
+    <Resource Include="Content\Images\DeleteGridHoverIcon.png" />
+    <Resource Include="Content\Images\DeleteGridIcon.png" />
+    <Resource Include="Content\Images\DeleteGridSelectedIcon.png" />
+    <Resource Include="Content\Images\DeleteIcon.png" />
+    <Resource Include="Content\Images\DeleteIconHover.png" />
+    <Resource Include="Content\Images\DiscountIcon.png" />
+    <Resource Include="Content\Images\EditGridHoverIcon.png" />
+    <Resource Include="Content\Images\EditGridIcon.png" />
+    <Resource Include="Content\Images\EditGridSelectedIcon.png" />
+    <Resource Include="Content\Images\EditIcon.png" />
+    <Resource Include="Content\Images\EditIconHover.png" />
+    <Resource Include="Content\Images\EmailAddress.png" />
+    <Resource Include="Content\Images\ExitBtn.png" />
+    <Resource Include="Content\Images\Flash.png" />
+    <Resource Include="Content\Images\fonfile.ico" />
+    <Resource Include="Content\Images\FreeClassListIcon.png" />
+    <Resource Include="Content\Images\FreeClassRequestIcon.png" />
+    <Resource Include="Content\Images\FreeClassRequestListIcon.png" />
+    <Resource Include="Content\Images\GreenPlayer.png" />
+    <Resource Include="Content\Images\Home.gif" />
+    <Resource Include="Content\Images\images.jpg" />
+    <Resource Include="Content\Images\imgSearchGadget.png" />
+    <Resource Include="Content\Images\Info.png" />
+    <Resource Include="Content\Images\InfoHover.png" />
+    <Resource Include="Content\Images\InfoSelected.png" />
+    <Resource Include="Content\Images\InputIcon.png" />
+    <Resource Include="Content\Images\InstallmentsIcon.png" />
+    <Resource Include="Content\Images\MainFormAddEntranceExam.png" />
+    <Resource Include="Content\Images\MainFormBranch.png" />
+    <Resource Include="Content\Images\MainFormCancelClass.png" />
+    <Resource Include="Content\Images\MainFormCity.png" />
+    <Resource Include="Content\Images\MainFormClassAttendanceFormPrint.png" />
+    <Resource Include="Content\Images\MainFormClassRoom.png" />
+    <Resource Include="Content\Images\MainFormCourse.png" />
+    <Resource Include="Content\Images\MainFormField.png" />
+    <Resource Include="Content\Images\MainFormFreeClassPayment.png" />
+    <Resource Include="Content\Images\MainFormPayment.png" />
+    <Resource Include="Content\Images\MainFormRegisterClassAttendance.png" />
+    <Resource Include="Content\Images\MainFormRegisterEntranceExamPeriod.png" />
+    <Resource Include="Content\Images\MainFormReserve.png" />
+    <Resource Include="Content\Images\MainFormSetUpFreeClass.png" />
+    <Resource Include="Content\Images\MainFormUnivercity.png" />
+    <Resource Include="Content\Images\max.png" />
+    <Resource Include="Content\Images\maxhot.png" />
+    <Resource Include="Content\Images\maxhot_n.png" />
+    <Resource Include="Content\Images\maxpressed.png" />
+    <Resource Include="Content\Images\maxpressed_n.PNG" />
+    <Resource Include="Content\Images\max_n.PNG" />
+    <Resource Include="Content\Images\men.png" />
+    <Resource Include="Content\Images\MenDeselected.gif" />
+    <Resource Include="Content\Images\MenDeselectedHover.gif" />
+    <Resource Include="Content\Images\MenSelected.gif" />
+    <Resource Include="Content\Images\min.png" />
+    <Resource Include="Content\Images\minhot.png" />
+    <Resource Include="Content\Images\minpressed.png" />
+    <Resource Include="Content\Images\min_n.png" />
+    <Resource Include="Content\Images\MyDiscount.png" />
+    <Resource Include="Content\Images\normal.PNG" />
+    <Resource Include="Content\Images\normalhot.PNG" />
+    <Resource Include="Content\Images\normalpress.PNG" />
+    <Resource Include="Content\Images\OpenComboIcon.png" />
+    <Resource Include="Content\Images\OutputIcon.png" />
+    <Resource Include="Content\Images\PayCash.png" />
+    <Resource Include="Content\Images\PaymentCash.png" />
+    <Resource Include="Content\Images\Phone.gif" />
+    <Resource Include="Content\Images\PlayGreen.gif" />
+    <Resource Include="Content\Images\PlayGreenAcc.png" />
+    <Resource Include="Content\Images\PlayHelpMovie.gif" />
+    <Resource Include="Content\Images\PlayHelpMovie.png" />
+    <Resource Include="Content\Images\PlayHelpMovie2.png" />
+    <Resource Include="Content\Images\PlayHelpMovieIC.png" />
+    <Resource Include="Content\Images\PrintGreen.png" />
+    <Resource Include="Content\Images\PrintIcon.png" />
+    <Resource Include="Content\Images\PrintIconHover.png" />
+    <Resource Include="Content\Images\ReportIcon.png" />
+    <Resource Include="Content\Images\ReportIconHover.png" />
+    <Resource Include="Content\Images\Restore.png" />
+    <Resource Include="Content\Images\RestoreHover.png" />
+    <Resource Include="Content\Images\RestorePress.png" />
+    <Resource Include="Content\Images\RightBG.png" />
+    <Resource Include="Content\Images\RightBGHover.png" />
+    <Resource Include="Content\Images\RightSide.png" />
+    <Resource Include="Content\Images\RightSideHover.png" />
+    <Resource Include="Content\Images\RolesIcon.png" />
+    <Resource Include="Content\Images\Search-icon.png" />
+    <Resource Include="Content\Images\SearchIcon.png" />
+    <Resource Include="Content\Images\SFAdded.png" />
+    <Resource Include="Content\Images\SFEducation.png" />
+    <Resource Include="Content\Images\SFEducationSelected.png" />
+    <Resource Include="Content\Images\SFFinancial.png" />
+    <Resource Include="Content\Images\SFFinancialSelected.png" />
+    <Resource Include="Content\Images\SFParent.png" />
+    <Resource Include="Content\Images\SFParentSelected.png" />
+    <Resource Include="Content\Images\SFStudent.png" />
+    <Resource Include="Content\Images\SFStudentSelected.png" />
+    <Resource Include="Content\Images\SFUnivercity.png" />
+    <Resource Include="Content\Images\SFUnivercitySelected.png" />
+    <Resource Include="Content\Images\StudentCartex.png" />
+    <Resource Include="Content\Images\StudentEdit.png" />
+    <Resource Include="Content\Images\StudentListIcon.png" />
+    <Resource Include="Content\Images\TeacherCartex.png" />
+    <Resource Include="Content\Images\TeacherClassIcon.png" />
+    <Resource Include="Content\Images\TeacherListIcon.png" />
+    <Resource Include="Content\Images\TeacherPay.png" />
+    <Resource Include="Content\Images\TeacherSales.png" />
+    <Resource Include="Content\Images\Tick.png" />
+    <Resource Include="Content\Images\TransactionIcon.png" />
+    <Resource Include="Content\Images\tst.png" />
+    <Resource Include="Content\Images\VacationIcon.png" />
+    <Resource Include="Content\Images\VideoIcon.png" />
+    <Resource Include="Content\Images\WomenDeselected.gif" />
+    <Resource Include="Content\Images\WomenDeselectedHover.gif" />
+    <Resource Include="Content\Images\WomenSelected.gif" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

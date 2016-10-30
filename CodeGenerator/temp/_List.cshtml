@@ -1,0 +1,91 @@
+﻿@using Panberes.Helpers
+@using Panberes.ViewModels.Article
+@using Panberes.ViewModels.Shared
+@model Panberes.ViewModels.Article.ArticleAdminIndexViewModel
+@{
+    Layout = "";
+
+    string[] headTcss =
+    {
+        " col-lg-3 col-sm-3 col-xs-4  ",
+        " col-lg-3 col-sm-3 col-xs-4  ",
+        " col-lg-2 col-sm-2 col-xs-2  ",
+        " col-lg-2 col-sm-2 col-xs-2  ",
+    };
+    string[] headIcss =
+    {
+        " col-sm-2 ",
+        " col-sm-2 ",
+        " col-sm-2 ",
+        " col-sm-2 ",
+    };
+    string[] canFilterFields = new[]
+    {
+        "title", 
+        "author"
+    };
+    string[] filterFields = Model.FilterFieldsName;
+    string[] headDivcss =
+    {
+        " col-sm-9 ",
+        " col-sm-9 ",
+        " col-sm-9 ",
+        " col-sm-9 ",
+    };
+    string[] canSortFields = new[]
+    {
+        "Title", 
+        "Author", "IsApproved", "ViewCount"
+    };
+    var sortFields = string.IsNullOrEmpty(Model.SortFieldName) ? Html.NameFor(x => x.RowList.First().Id).ToString() : Model.SortFieldName;
+    var isAsc = Model.IsAsc;
+    const string headButtonCssClass = " col-lg-2 col-sm-2 col-xs-2  ";
+    const string deleteButtonId = "deleteArticleButton";
+    const bool isHaveHeadButton = true;
+    string[] inclue = new[] { "" };
+    string[] exclude = new[]
+    {
+        "Id", 
+        "BaseId"
+    };
+    var otherButton = new List<Tuple<string, string>>()
+    {
+        new Tuple<string, string>(
+            Url.Action(MVC.Article.ArticleOlAdmin.ActionNames.Index, MVC.Article.ArticleOlAdmin.Name, new { area = MVC.Article.Name }),
+            "زبان")
+    };
+    var deleteUrl = Url.Action(MVC.Article.ArticleAdmin.ActionNames.Delete, MVC.Article.ArticleAdmin.Name, new { area = MVC.Article.Name });
+    var editUrl = Url.Action(MVC.Article.ArticleAdmin.ActionNames.Edit, MVC.Article.ArticleAdmin.Name, new { area = MVC.Article.Name });
+    var detailsUrl = Url.Action(MVC.Article.ArticleAdmin.ActionNames.Details, MVC.Article.ArticleAdmin.Name, new { area = MVC.Article.Name });
+}
+
+
+@Html.Partial(MVC.Shared.Views.Partial._Grid, GridEctensions.GenerateGenericList(Model.RowList, new ArticleAdminIndexListViewModel(),
+    headTcss,
+    headIcss,
+    filterFields,
+    canFilterFields,
+    headDivcss,
+    sortFields,
+    canSortFields,
+    isAsc,
+    headButtonCssClass,
+    deleteButtonId,
+    isHaveHeadButton,
+    exclude: exclude,
+    deleteUrl: deleteUrl,
+    detailsUrl: detailsUrl,
+    editUrl: editUrl,
+    nameUrlButton: otherButton
+    ))
+
+
+@Html.Partial(MVC.Shared.Views.Partial._Paging, new PagingViewModel()
+{
+    CssClassName = "GridPaging",
+    CurrentRowCount = Model.CurrentRowCount,
+    PageSize = Model.PageSize,
+    PageNum = Model.PageNum,
+    RowCount = Model.RowCount,
+    Url = Url.Action(MVC.Article.ArticleAdmin.ActionNames.IndexPaging, MVC.Article.ArticleAdmin.Name, new { area = MVC.Article.Name })
+})

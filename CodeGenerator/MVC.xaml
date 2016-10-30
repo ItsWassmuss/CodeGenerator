@@ -1,0 +1,1126 @@
+﻿<mahApps:MetroWindow x:Class="CodeGenerator.MVC"
+        xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MVC" Height="600" Width="800" WindowState="Maximized" WindowTitleBrush="#FFF0F0F0"  >
+
+    <Window.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="{x:Type TabItem}"  x:Key="RadioButtonListBoxStyle2">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <!--<Setter Property="Foreground" Value="{StaticResource mainRegionControlForegroundBrush}"></Setter>-->
+                <Setter Property="Header" Value="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <RadioButton IsChecked="{TemplateBinding IsSelected}" Content="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Margin}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type TabControl}" x:Key="RadioButtonListBoxStyle22" >
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid KeyboardNavigation.TabNavigation="Local" ClipToBounds="True" SnapsToDevicePixels="True">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel IsItemsHost="True" Orientation="Horizontal" Margin="10,0"/>
+                                <ContentPresenter Grid.Row="1" Name="PART_SelectedContentHost" Content="{TemplateBinding TabControl.SelectedContent}" ContentSource="SelectedContent" ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"></ContentPresenter>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style x:Key="RadioButtonListBoxStyle" TargetType="{x:Type TabControl}">
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type TabItem}" >
+                            <Setter Property="Margin" Value="2, 2, 2, 0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border Background="Transparent">
+                                            <RadioButton
+                                    Content="{TemplateBinding ContentPresenter.Content}" VerticalAlignment="Center"
+                                    IsChecked="{Binding Path=IsSelected,Mode=TwoWay}"/>
+
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <!--Datagrid Column Header down the page-->
+            <Style TargetType="{x:Type DataGridColumnHeader}"  x:Key="dtGridMainColumnHeader">
+                <Setter Property="Background" Value="#41ae11"/>
+                <Setter Property="Foreground" Value="#f7f7f7"/>
+                <Setter Property="FontFamily" Value="/WpfApp;component/Content/#WeblogmaYekan"/>
+                <Setter Property="Padding" Value="2,1,10,1"/>
+                <Setter Property="Height" Value="25"/>
+                <Setter Property="Margin" Value="0,0,0,2"/>
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="HorizontalContentAlignment"  Value="center"/>
+                <!--<Setter Property="FontWeight" Value="Bold"/>-->
+            </Style>
+
+            <!--Datagrid Cell down the page-->
+            <Style TargetType="DataGridCell"  x:Key="dtGridMainCell">
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <Setter Property="Foreground"  Value="#696969"/>
+                <Setter Property="FontSize"  Value="18"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate  TargetType="{x:Type DataGridCell}">
+                            <Border Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="#FFA6A6A6"
+                                BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Height="{TemplateBinding Height}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <!--<Setter Property="HorizontalAlignment"  Value="center"/>-->
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#8a61fd" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="BorderBrush" Value="#8a61fd" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Datagrid Row down the page-->
+            <Style TargetType="{x:Type DataGridRow}"  x:Key="dtGridMainRow">
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,2,0,2"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="#d0e8ff"/>
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="true">
+                        <Setter Property="Background" Value="#8a61fd"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Datagrid down the page-->
+            <Style TargetType="{x:Type DataGrid}" x:Key="dtGridMain">
+                <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+                <!--<Setter Property="Width" Value="856"/>-->
+                <!--<Setter Property="Height" Value="300"/>-->
+                <Setter Property="RowBackground"  Value="#efefef"/>
+                <Setter Property="Background"  Value="Transparent"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="White"/>
+                <!--<Setter Property="AlternatingRowBackground"  Value="#e3e3e3" Value="#efefef"/>-->
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="ItemsSource" Value="{Binding}"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserReorderColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="RowHeaderWidth" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGrid}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
+                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                    <ScrollViewer.Template>
+                                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" 
+                                                Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" 
+                                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, 
+                                                Converter ={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                                Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" 
+                                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, 
+                                                Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <!--This is the scroll content presenter that gets shifted to the left 17 units so that scrollbar doesn't cover it-->
+                                                <ScrollContentPresenter Margin="0,0,15,0" x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" 
+                                                                Grid.ColumnSpan="2" Grid.Row="1"/>
+                                                <!--This is the vertical scrollbar. Margin is used to shift it to the left 17 units over the content-->
+                                                <ScrollBar Margin="-14,0,0,0" x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" 
+                                                   Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" 
+                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                   ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                                <Grid Grid.Column="1" Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, 
+                                                    RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" 
+                                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, 
+                                                       RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                                </Grid>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </ScrollViewer.Template>
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--ScrollBars-->
+            <Style x:Key="MyScrollBar" TargetType="{x:Type ScrollBar}" >
+                <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+                <Setter Property="Foreground" Value="#afafaf" />
+                <Setter Property="Background" Value="#e7e7e7" />
+                <Setter Property="Width" Value="14" />
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}" >
+                            <Grid x:Name="GridRoot" Width="14" Background="{TemplateBinding Background}"  >
+                                <Track x:Name="PART_Track"  IsDirectionReversed="true"  Focusable="false" >
+                                    <Track.Thumb>
+                                        <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumb}" />
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand"  Opacity="0"  Focusable="True" />
+                                    </Track.DecreaseRepeatButton>
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Button 2 Style -->
+            <Style x:Key="RoundButton2" TargetType="{x:Type Button}">
+                <!--<Setter Property="Width" Value="20"/>-->
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="MyBorder" Width="45" Margin="2.5,0,0,0" >
+                                <Image x:Name="MyImage"  Source="/Content/Images/DeleteGridIcon.png"  Width="20"  />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"     Value="True">
+                                    <Setter TargetName="MyImage" Property="Source" Value="/Content/Images/DeleteGridSelectedIcon.png" />
+
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="MyBorder" Property="Background" Value="#cdcdcd" />
+                                    <Setter TargetName="MyImage" Property="Source" Value="/Content/Images/DeleteGridHoverIcon.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Button 1 Style -->
+            <Style x:Key="RoundButton1" TargetType="{x:Type Button}">
+                <!--<Setter Property="Width" Value="20"/>-->
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="MyBorder" Width="45" Margin="2.5,0,0,0" >
+                                <Image x:Name="MyImage2"  Source="/Content/Images/EditGridIcon.png"  Width="20"  />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource  AncestorType=DataGridRow}}"   Value="True">
+                                    <Setter TargetName="MyImage2" Property="Source" Value="/Content/Images/EditGridSelectedIcon.png" />
+
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="MyBorder" Property="Background" Value="#cdcdcd" />
+                                    <Setter TargetName="MyImage2" Property="Source" Value="/Content/Images/EditGridHoverIcon.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="RoundButton11" TargetType="{x:Type Button}">
+                <!--<Setter Property="Width" Value="20"/>-->
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="MyBorder" Width="45" Margin="2.5,0,0,0" >
+                                <Image x:Name="MyImage2"  Source="Images/CheckMarckpng.png"  Width="20"  />
+                            </Border>
+                            <!--<ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource  AncestorType=DataGridRow}}"   Value="True">
+                                    <Setter TargetName="MyImage2" Property="Source" Value="/Content/Images/EditGridSelectedIcon.png" />
+
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="MyBorder" Property="Background" Value="#cdcdcd" />
+                                    <Setter TargetName="MyImage2" Property="Source" Value="/Content/Images/EditGridHoverIcon.png" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>-->
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style TargetType="{x:Type TextBox}" x:Key="EnableTextBox">
+                <!--="" ="Left"-->
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <!--<Setter Property="HorizontalContentAlignment" Value="Left"/>-->
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Width" Value="122"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#FFCFCFCF"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Auto"/>
+                <Setter Property="FontFamily" Value="/WpfApp;component/Content/#WeblogmaYekan"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="#FF585858"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="TextBoxborder" 
+                                Background="White" 
+                                BorderBrush="#FFCFCFCF" 
+                                CornerRadius="1" 
+                                BorderThickness="1" >
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" TargetName="TextBoxborder"  Value="#a4fb9f"/>
+                                    <Setter Property="BorderThickness" TargetName="TextBoxborder" Value="1.1"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+            </Style>
+            <!--
+            Background="{Binding Path=RowBackground,  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid},Converter={StaticResource BackgroundColor}}"
+            -->
+            <Style x:Key="UnEnableTextBox" TargetType="{x:Type TextBox}" >
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Auto"/>
+                <Setter Property="FontFamily" Value="/WpfApp;component/Content/#WeblogmaYekan"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="#696969"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="UnEnableTextBoxborder" 
+                                CornerRadius="0" 
+                                BorderThickness="0"  Background="{TemplateBinding Background}">
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="UnEnableTextBoxborder"   Value="#8a61fd"/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" TargetName="UnEnableTextBoxborder"  Value="#a4fb9f"/>
+                                    <Setter Property="BorderThickness" TargetName="UnEnableTextBoxborder" Value="1.1"/>
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+            </Style>
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid Background="#FFF0F0F0">
+        <Label Content="Select Server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.026,0.038" Height="29" Width="86"/>
+        <TextBox x:Name="txtServer" Text="192.168.0.2\MSSQLSERVERMASTE" HorizontalAlignment="Left" Height="29" Margin="182,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269"/>
+        <Label Content="Server" HorizontalAlignment="Left" Margin="138,10,0,0" VerticalAlignment="Top" Height="32"/>
+        <TextBox x:Name="txtUserName" HorizontalAlignment="Left" Height="29" Margin="485,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="wassmuss"/>
+        <Label Content="Uid" HorizontalAlignment="Left" Margin="456,10,0,0" VerticalAlignment="Top" Height="32"/>
+        <TextBox x:Name="txtPassword" HorizontalAlignment="Left" Height="29" Margin="662,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="Vasmus75471"/>
+        <Label Content="Pass" HorizontalAlignment="Left" Margin="628,10,0,0" VerticalAlignment="Top" Height="32"/>
+        <Button x:Name="btnGetTables" Content="GetTables" HorizontalAlignment="Left" Margin="470,64,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="btnGetTables_Click"/>
+        <ComboBox x:Name="cmbDatabases" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="90,64,0,0" SelectionChanged="CmbDatabases_OnSelectionChanged"/>
+        <Label Content="Tables" HorizontalAlignment="Left" Margin="249,59,0,0" VerticalAlignment="Top" Height="32"/>
+        <ComboBox x:Name="cmbTables" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="298,64,0,0" SelectionChanged="CmbTables_OnSelectionChanged"/>
+        <Button x:Name="btnGetDatabase" Content="FillDatabase" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="75" Click="btnGetDatabase_Click" />
+        <CheckBox x:Name="chkOpenFile"  Content="Open File After Create " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="633,64,0,0" Width="149"/>
+        <Label Content="Selected Table" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Height="32"/>
+        <WrapPanel  HorizontalAlignment="Left" Height="50" Margin="138,91,0,0" VerticalAlignment="Top" Width="600" x:Name="StackPanel"/>
+        <TabControl HorizontalAlignment="Stretch" Margin="10,141,10,10" VerticalAlignment="Stretch" >
+            <TabItem Header="Setting">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="ProjectName" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="32"/>
+                    <TextBox x:Name="txtProjectName" HorizontalAlignment="Left" Height="29" Margin="93,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="Panberes"/>
+                    <Label Content="ModelName" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Height="32"/>
+                    <TextBox x:Name="txtModelName" HorizontalAlignment="Left" Height="29" Margin="93,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text=""/>
+                    <Label Content="Model Persian Name" HorizontalAlignment="Left" Margin="248,45,0,0" VerticalAlignment="Top" Height="32"/>
+                    <TextBox x:Name="txtModelPersianName" HorizontalAlignment="Left" Height="29" Margin="373,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text=""/>
+                    <Label Content="Area" HorizontalAlignment="Left" Margin="54,79,0,0" VerticalAlignment="Top" Height="32"/>
+                    <TextBox x:Name="txtArea" HorizontalAlignment="Left" Height="29" Margin="93,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text=""/>
+                    <Label Content="Controller" HorizontalAlignment="Left" Margin="305,79,0,0" VerticalAlignment="Top" Height="32"/>
+                    <TextBox x:Name="txtController" HorizontalAlignment="Left" Height="29" Margin="373,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text=""/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="ViewModelAndView">
+                <Grid Background="#FFE5E5E5">
+                    <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" >
+                        <TabItem Header="Index">
+                            <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" >
+                                <TabItem Header="IAdminIndexListViewModel">
+                                    <Grid Background="#FFE5E5E5">
+
+                                        <Button Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="btnGetField_Click" Margin="10,10,0,0"/>
+                                        <Label Content="Selected field for display in list view as datagrid :" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Height="32"/>
+                                        <!--<WrapPanel Visibility="Hidden" Orientation="Horizontal" HorizontalAlignment="Stretch" Height="250" Margin="10,69,0,0" VerticalAlignment="Top" x:Name="StackPanelField"/>-->
+
+                                        <DataGrid x:Name="dgIAdminIndexList"       
+                                            ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
+                                            CellStyle="{StaticResource dtGridMainCell}" 
+                                            RowStyle="{StaticResource dtGridMainRow}" 
+                                            Style="{StaticResource dtGridMain}" 
+                                            Margin="18,69,10,10" 
+                                            BorderThickness="0" Padding="0,0,-3,0" 
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            AutoGenerateColumns="False" >
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Width="*"  IsReadOnly="True" Header="Field" Binding="{Binding Field, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                <DataGridTemplateColumn  Width="*" Header="Display">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Display, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsKey">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <RadioButton  GroupName="Key" Content="IsKey" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsKey, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" >
+                                                    <DataGridTemplateColumn.CellTemplate >
+                                                        <DataTemplate >
+                                                            <Button Content="Up" Click="btnUp_OnClick" Tag="Order" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="Down" Click="btnDown_OnClick"  Tag="Order"   />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                        <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnGenerateIAdminIndexList_OnClick"  Margin="544,10,0,0"/>
+
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="AdminIndexListViewModel">
+                                    <Grid Background="#FFE5E5E5">
+                                        <Label Content="Customise selected field :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="32"/>
+                                        <CheckBox x:Name="chkHaveOtherLanguage" IsChecked="True"  Content="Is Generate Other Language View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="452,5,0,0" />
+                                        <CheckBox x:Name="chkHaveAdminIndexViewModel"  IsChecked="True"  Content="Is Generate AdminIndexViewModel View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="452,21,0,0" />
+
+                                        <DataGrid x:Name="dgAdminIndexList"       
+                                          ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
+                                          CellStyle="{StaticResource dtGridMainCell}" 
+                                          RowStyle="{StaticResource dtGridMainRow}" 
+                                          Style="{StaticResource dtGridMain}" 
+                                          Margin="10,42,10,30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          BorderThickness="0" Padding="0,0,-3,0" 
+                                          AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Width="*"  IsReadOnly="True" Header="Field" Binding="{Binding Field, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                <DataGridTemplateColumn  Width="*" Header="IsKey">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <RadioButton GroupName="Key" Content="IsKey" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsKey, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsFilterText">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsFilterText" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsFilterText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="FilterText">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding FilterText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsCleanHtml">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsCleanHtml" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsCleanHtml, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsBoolean">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsBoolean" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsBoolean, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="YesMessage">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding YesMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="NoMessage">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NoMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                        <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="193" Margin="10,0,0,10" Click="btnGenerateAdminIndexList_Click"/>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="View" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                    <Grid Background="#FFE5E5E5">
+                                        <!--<Button x:Name="btnSelectCreateField2" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>-->
+
+                                        <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="btnGenerateAdminIndexView_Click"  Margin="544,10,0,0"/>
+
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="dgAdminIndexView" Margin="0,37,0,0">
+                                            <TabControl.ItemTemplate>
+                                                <!-- this is the header template-->
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Key}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <!-- this is the body of the TabItem template-->
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <DockPanel >
+                                                            <DockPanel  Height="Auto" Width="Auto" LastChildFill="True" >
+                                                                <Label Content="headTcss:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding headTcss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="headIcss:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding headIcss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="headDivcss:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding headDivcss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox Content="canFilterFields" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding canFilterFields, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox Content="canSortFields" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding canSortFields, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox Content="inclue" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding inclue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox Content="exclude" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding exclude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+
+                        <TabItem Header="AdminCreateViewModel" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                            <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" >
+                                <TabItem Header="ViewModel">
+                                    <Grid Background="#FFE5E5E5">
+                                        <CheckBox x:Name="chkVmHaveOtherSeo" IsChecked="True"  Content="Is ViewModel have seo fields ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,0,0,0" />
+                                        <Button Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>
+                                        <CheckBox x:Name="chkGenerateEditVM" IsChecked="True"  Content="Is generate edit viewModel ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,21,0,0" />
+
+                                        <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnGenerateAdminCreate_OnClick"  Margin="544,10,0,0"/>
+
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminCreateViewModel" Margin="0,37,0,0">
+                                            <TabControl.ItemTemplate>
+                                                <!-- this is the header template-->
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Field}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <!-- this is the body of the TabItem template-->
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <DockPanel >
+                                                            <DockPanel  >
+                                                                <Label Content="Display Name:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding Display, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRequired" Content="Required" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RequiredMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxStringLength" Content="StringLength" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding StringLengthMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxPhone" Content="Phone" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding PhoneMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRange" Content="Range" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RangeMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRegularExpression" Content="RegularExpression" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Pattern:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding Pattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RegularExpressionMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxAllowHtml" Content="AllowHtml" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsAllowHtml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxScaffoldColumnFalse" Content="ScaffoldColumnFalse" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsScaffoldColumnFalse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="IsImage" Content="IsImage" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="IsLanguage" Content="IsLanguage" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="IsUseInOl" Content="IsUseInOl" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsUseInOl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="View" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                    <Grid Background="#FFE5E5E5">
+                                        <!--<Button x:Name="btnSelectCreateField2" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>-->
+                                        <CheckBox x:Name="chkViewHaveOtherSeo" IsChecked="True"  Content="Is View have seo ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="281,5,0,0" />
+                                        <CheckBox x:Name="chkAdminEditView" IsChecked="True"  Content="Is generate edit view ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="281,21,0,0" />
+
+                                        <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="btnGenerateAdminCreateView_Click"  Margin="544,10,0,0"/>
+
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="dgAdminCreateView" Margin="0,37,0,0" >
+                                            <TabControl.ItemTemplate>
+                                                <!-- this is the header template-->
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Key}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <!-- this is the body of the TabItem template-->
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <DockPanel >
+                                                            <CheckBox   Content="IsCheckBox" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsCheckBox,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox   Content="IsTextArea" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsTextArea,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <CheckBox Content="IsCkEditor" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsCkEditor,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox   Content="IsTextBox" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsTextBox,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox   Content="IsImage" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsImage,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <CheckBox Content="IsLandscape" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsLandscape,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox   Content="IsDropDownList" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsDropDownList,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <CheckBox   Content="IsNestedDropDownList" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsNestedDropDownList,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <!--<Label Content="headDivcss:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding headDivcss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />-->
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <CheckBox   Content="IsLabel" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsLabel,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <!--<Label Content="headIcss:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding headIcss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>-->
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="AdminDetailsViewModel">
+
+
+                            <Grid Background="#FFE5E5E5">
+
+                                <Button x:Name="btnSelectDetailsField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Margin="10,10,0,0" Click="BtnSelectDetailsField_OnClick"/>
+                                <Label Content="Selected field for display in list view as datagrid :" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Height="32"/>
+
+                                <DataGrid x:Name="dgAdminDetails"       
+                                            ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
+                                            CellStyle="{StaticResource dtGridMainCell}" 
+                                            RowStyle="{StaticResource dtGridMainRow}" 
+                                            Style="{StaticResource dtGridMain}" 
+                                            Margin="18,69,10,10" 
+                                            BorderThickness="0" Padding="0,0,-3,0" 
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            AutoGenerateColumns="False" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Width="*"  IsReadOnly="True" Header="Field" Binding="{Binding Field, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTemplateColumn  Width="*" Header="Display">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Display, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="*" Header="IsHtml">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox  Content="IsHtml" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsHtml, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="*" Header="IsImage">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox  Content="IsImage" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsImage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="*" Header="IsCheckBox">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox  Content="IsCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsCheckBox, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="*" Header="TrueMessage">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TrueCheckBox, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="*" Header="FalseMessage">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding FalseCheckBox, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Margin="544,10,0,0" Click="BtnGenerateAdminDetails_OnClick"/>
+                                <CheckBox x:Name="chkHaveOtherLanguageList"  Content="Is generate other language list ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,0,0,0" Width="250"/>
+                                <CheckBox x:Name="chkAdminDetailsView"  IsChecked="True"  Content="Is generate details view ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,21,0,0" Width="250"/>
+                                <CheckBox x:Name="chkAdminDetailsHaveSeo" IsChecked="True"  Content="Is View and Viewmodel have seo ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,42,0,0" />
+
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="OtherLanguage">
+                            <TabControl>
+                                <TabItem Header="AdminOlIndexList">
+                                    <Grid Background="#FFE5E5E5">
+
+                                        <Button x:Name="btnSelectAdminOlIndexListField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193"  Margin="10,10,0,0" Click="BtnSelectAdminOlIndexListField_OnClick"/>
+                                        <Label Content="Selected field for display in list view as datagrid :" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Height="32"/>
+                                        <CheckBox x:Name="chkHaveAdminOlIndexViewModel"  IsChecked="True"  Content="Is Generate AdminIndexViewModel View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="454,10,0,0" />
+
+                                        <DataGrid x:Name="dgAdminOlIndexList"       
+                                            ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
+                                            CellStyle="{StaticResource dtGridMainCell}" 
+                                            RowStyle="{StaticResource dtGridMainRow}" 
+                                            Style="{StaticResource dtGridMain}" 
+                                            Margin="18,69,10,10" 
+                                            BorderThickness="0" Padding="0,0,-3,0" 
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            AutoGenerateColumns="False" >
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Width="*"  IsReadOnly="True" Header="Field" Binding="{Binding Field, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                <DataGridTemplateColumn  Width="*" Header="Display">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Display, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsKey">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <RadioButton GroupName="Key" Content="IsKey" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsKey, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsFilterText">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsFilterText" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsFilterText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="FilterText">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding FilterText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsCleanHtml">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsCleanHtml" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsCleanHtml, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="IsBoolean">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox Content="IsBoolean" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsBoolean, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="YesMessage">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding YesMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="NoMessage">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NoMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="100"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" >
+                                                    <DataGridTemplateColumn.CellTemplate >
+                                                        <DataTemplate >
+                                                            <Button Content="Up" Click="btnUpOl_OnClick" Tag="Order" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="Down" Click="btnDownOl_OnClick"  Tag="Order"   />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                        <Button x:Name="btnGenerateAdminOlIndexList" Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193"   Margin="539,37,0,0" Click="BtnGenerateAdminOlIndexList_OnClick"/>
+
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="AdminOlCreate" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                    <Grid Background="#FFE5E5E5">
+                                        <Button x:Name="btnSelectCreateOlField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateOlField_OnClick" Margin="10,10,0,0"/>
+
+                                        <Button x:Name="btnGenerateAdminCreateOl" Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnGenerateAdminOlCreate_OnClick"  Margin="544,10,0,0"/>
+
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminOlCreate" Margin="0,37,0,0">
+                                            <TabControl.ItemTemplate>
+                                                <!-- this is the header template-->
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Field}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <!-- this is the body of the TabItem template-->
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <DockPanel  >
+                                                            <DockPanel>
+                                                                <CheckBox  Content="IsParentKey" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsKey, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel  >
+                                                                <Label Content="Display Name:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding Display, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRequired" Content="Required" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RequiredMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxStringLength" Content="StringLength" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding StringLengthMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxPhone" Content="Phone" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding PhoneMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRange" Content="Range" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RangeMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRegularExpression" Content="RegularExpression" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Pattern:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding Pattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RegularExpressionMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxAllowHtml" Content="AllowHtml" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsAllowHtml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxScaffoldColumnFalse" Content="ScaffoldColumnFalse" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsScaffoldColumnFalse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="AdminOlEdit" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                    <Grid Background="#FFE5E5E5">
+                                        <Button x:Name="btnSelectEditOlField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectEditOlField_OnClick" Margin="10,10,0,0"/>
+
+                                        <Button x:Name="btnGenerateAdminEditOl" Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnGenerateAdminOlEdit_OnClick"  Margin="544,10,0,0"/>
+
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminOlEdit" Margin="0,37,0,0">
+                                            <TabControl.ItemTemplate>
+                                                <!-- this is the header template-->
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Field}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <!-- this is the body of the TabItem template-->
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <DockPanel  >
+                                                            <DockPanel>
+                                                                <CheckBox  Content="IsParentKey" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsKey, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <DockPanel  >
+                                                                <Label Content="Display Name:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding Display, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRequired" Content="Required" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RequiredMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxStringLength" Content="StringLength" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxStringLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding StringLengthMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxPhone" Content="Phone" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding PhoneMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRange" Content="Range" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Min:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MinRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="Max:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RangeMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxRegularExpression" Content="RegularExpression" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel  IsEnabled="{Binding IsChecked, ElementName=CheckBoxRegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Width="Auto" LastChildFill="True">
+                                                                <Label Content="Pattern:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,3,0,0" Text="{Binding Pattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200" />
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding RegularExpressionMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxAllowHtml" Content="AllowHtml" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsAllowHtml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                        <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxScaffoldColumnFalse" Content="ScaffoldColumnFalse" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsScaffoldColumnFalse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="View">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Controller">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</mahApps:MetroWindow>

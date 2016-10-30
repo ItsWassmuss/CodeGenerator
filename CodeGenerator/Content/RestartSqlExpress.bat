@@ -1,0 +1,4 @@
+net stop  MSSQL$SQLEXPRESS
+net start MSSQL$SQLEXPRESS 
+
+
