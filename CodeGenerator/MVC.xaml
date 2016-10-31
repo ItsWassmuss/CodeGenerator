@@ -464,6 +464,17 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  Width="*" Header="UseType">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox SelectedItem="{Binding UseType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  VerticalAlignment="Top" >
+                                                                <ComboBoxItem Content="justMain" IsSelected="True"></ComboBoxItem>
+                                                                <ComboBoxItem Content="justOtherLanguage"></ComboBoxItem>
+                                                                <ComboBoxItem Content="Multiple"></ComboBoxItem>
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn  Width="*" >
                                                     <DataGridTemplateColumn.CellTemplate >
                                                         <DataTemplate >
@@ -478,7 +489,6 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-
                                             </DataGrid.Columns>
                                         </DataGrid>
 
@@ -491,6 +501,7 @@
                                         <Label Content="Customise selected field :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="32"/>
                                         <CheckBox x:Name="chkHaveOtherLanguage" IsChecked="True"  Content="Is Generate Other Language View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="452,5,0,0" />
                                         <CheckBox x:Name="chkHaveAdminIndexViewModel"  IsChecked="True"  Content="Is Generate AdminIndexViewModel View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="452,21,0,0" />
+                                        <CheckBox x:Name="chkHaveAdminOlIndexViewModel"  IsChecked="True"  Content="Is Generate AdminOlIndexViewModel View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="159,5,0,0" />
 
                                         <DataGrid x:Name="dgAdminIndexList"       
                                           ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
@@ -840,12 +851,11 @@
                         </TabItem>
                         <TabItem Header="OtherLanguage">
                             <TabControl>
-                                <TabItem Header="AdminOlIndexList">
+                                <!--<TabItem Header="AdminOlIndexList">
                                     <Grid Background="#FFE5E5E5">
 
                                         <Button x:Name="btnSelectAdminOlIndexListField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193"  Margin="10,10,0,0" Click="BtnSelectAdminOlIndexListField_OnClick"/>
                                         <Label Content="Selected field for display in list view as datagrid :" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Height="32"/>
-                                        <CheckBox x:Name="chkHaveAdminOlIndexViewModel"  IsChecked="True"  Content="Is Generate AdminIndexViewModel View Model ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="454,10,0,0" />
 
                                         <DataGrid x:Name="dgAdminOlIndexList"       
                                             ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
@@ -935,7 +945,7 @@
                                         <Button x:Name="btnGenerateAdminOlIndexList" Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193"   Margin="539,37,0,0" Click="BtnGenerateAdminOlIndexList_OnClick"/>
 
                                     </Grid>
-                                </TabItem>
+                                </TabItem>-->
                                 <TabItem Header="AdminOlCreate" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
                                     <Grid Background="#FFE5E5E5">
                                         <Button x:Name="btnSelectCreateOlField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateOlField_OnClick" Margin="10,10,0,0"/>

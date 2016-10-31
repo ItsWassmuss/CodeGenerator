@@ -517,7 +517,7 @@ namespace CodeGenerator
                 {
                     Field = x,
                     Display = x,
-                    Order = counter++
+                    Order = counter++,
                 }).ToList());
             dgIAdminIndexList.ItemsSource = _selectedFieldForIAdminIndexListObser;
             FillAdminIndexList();
@@ -679,6 +679,9 @@ namespace CodeGenerator
 
             if (chkHaveAdminIndexViewModel.IsChecked == true)
                 WriteAdminIndexElements(AdminIndexRoot);
+
+            if (chkHaveAdminOlIndexViewModel.IsChecked == true)
+                BtnGenerateAdminOlIndexList();
         }
 
         private void WriteAdminIndexListElements(string fileName, string tableName)
@@ -1478,26 +1481,27 @@ namespace CodeGenerator
 
         private void FilldgAdminOlIndexList()
         {
-            var counter = 0;
-            _selectedFieldForAdminOlIndexListObser =
-                new ObservableCollection<AdminOlIndexList>(GenerateFiledList.Select(x => new AdminOlIndexList()
-                {
-                    Field = x,
-                    Display = x,
-                    Order = counter++,
-                    IsKey = false,
-                    IsFilterText = false,
-                    FilterText = 0,
-                    IsCleanHtml = false,
-                    IsBoolean = false,
-                    NoMessage = "",
-                    YesMessage = ""
-                }).ToList());
-            dgAdminOlIndexList.ItemsSource = _selectedFieldForAdminOlIndexListObser;
+            //var counter = 0;
+            //_selectedFieldForAdminOlIndexListObser =
+            //    new ObservableCollection<AdminOlIndexList>(GenerateFiledList.Select(x => new AdminOlIndexList()
+            //    {
+            //        Field = x,
+            //        Display = x,
+            //        Order = counter++,
+            //        IsKey = false,
+            //        IsFilterText = false,
+            //        FilterText = 0,
+            //        IsCleanHtml = false,
+            //        IsBoolean = false,
+            //        NoMessage = "",
+            //        YesMessage = ""
+            //    }).ToList());
+            //dgAdminOlIndexList.ItemsSource = _selectedFieldForAdminOlIndexListObser;
 
         }
 
-        private void BtnGenerateAdminOlIndexList_OnClick(object sender, RoutedEventArgs e)
+        //private void BtnGenerateAdminOlIndexList_OnClick(object sender, RoutedEventArgs e)
+        private void BtnGenerateAdminOlIndexList()
         {
             FillRootDirectory();
             CheckTempFolder();
@@ -1510,7 +1514,8 @@ namespace CodeGenerator
             //if (chkHaveOtherLanguage.IsChecked == true)
             //    WriteAdminOlIndexListOlElements(AdminOlIndexListOlRoot, _tableName);
 
-            if (chkHaveAdminOlIndexViewModel.IsChecked == true)
+            //if (chkHaveAdminOlIndexViewModel.IsChecked == true)
+            if (chkHaveAdminIndexViewModel.IsChecked == true)
                 WriteAdminOlIndexElements(AdminOlIndexRoot);
         }
 
@@ -1534,10 +1539,13 @@ namespace CodeGenerator
 
                 foreach (DataRow property in columns.Rows)
                 {
-                    if (_selectedFieldForAdminOlIndexListObser.Any(x => x.Field == property["Name"].ToString()))
+                    if (_selectedFieldForIAdminIndexListObser.Any(x => x.Field == property["Name"].ToString() &&
+                        ((string)x.UseType.Content == UseType.justOtherLanguage.ToString() || (string)x.UseType.Content == UseType.Multiple.ToString())))
                     {
+                        var currentIAdmin =
+                            _selectedFieldForIAdminIndexListObser.First(x => x.Field == property["Name"].ToString());
                         var currentAdmin =
-                            _selectedFieldForAdminOlIndexListObser.First(x => x.Field == property["Name"].ToString());
+                            _adminIndexListList.First(x => x.Field == property["Name"].ToString());
 
                         if (currentAdmin.IsKey)
                         {
@@ -1546,7 +1554,7 @@ namespace CodeGenerator
                             continue;
                         }
 
-                        WriteDisplayName(sw, currentAdmin.Display);
+                        WriteDisplayName(sw, currentIAdmin.Display);
                         if (currentAdmin.IsFilterText || currentAdmin.IsCleanHtml || currentAdmin.IsBoolean)
                         {
                             var privateName = GeneratePrivateName(property);
@@ -1680,35 +1688,35 @@ namespace CodeGenerator
 
         private void btnUpOl_OnClick(object sender, RoutedEventArgs e)
         {
-            var Columns = dgAdminOlIndexList.ItemsSource as ObservableCollection<AdminOlIndexList>;
-            var selectedColumn = dgAdminOlIndexList.SelectedItem as AdminOlIndexList;
+            //var Columns = dgAdminOlIndexList.ItemsSource as ObservableCollection<AdminOlIndexList>;
+            //var selectedColumn = dgAdminOlIndexList.SelectedItem as AdminOlIndexList;
 
-            if (selectedColumn == null) return;
-            if (selectedColumn.Order == 0) return;
+            //if (selectedColumn == null) return;
+            //if (selectedColumn.Order == 0) return;
 
-            Columns.Swap(selectedColumn.Order, selectedColumn.Order - 1);
-            for (int i = 0; i < Columns.Count; i++)
-                Columns[i].Order = i;
+            //Columns.Swap(selectedColumn.Order, selectedColumn.Order - 1);
+            //for (int i = 0; i < Columns.Count; i++)
+            //    Columns[i].Order = i;
 
-            dgAdminOlIndexList.ItemsSource =
-                new ObservableCollection<AdminOlIndexList>(Columns.OrderBy(x => x.Order).ToList());
+            //dgAdminOlIndexList.ItemsSource =
+            //    new ObservableCollection<AdminOlIndexList>(Columns.OrderBy(x => x.Order).ToList());
 
         }
 
         private void btnDownOl_OnClick(object sender, RoutedEventArgs e)
         {
-            var Columns = dgAdminOlIndexList.ItemsSource as ObservableCollection<AdminOlIndexList>;
-            var selectedColumn = dgAdminOlIndexList.SelectedItem as AdminOlIndexList;
+            //var Columns = dgAdminOlIndexList.ItemsSource as ObservableCollection<AdminOlIndexList>;
+            //var selectedColumn = dgAdminOlIndexList.SelectedItem as AdminOlIndexList;
 
-            if (selectedColumn == null) return;
-            if (selectedColumn.Order == GenerateFiledList.Count - 1) return;
+            //if (selectedColumn == null) return;
+            //if (selectedColumn.Order == GenerateFiledList.Count - 1) return;
 
-            Columns.Swap(selectedColumn.Order, selectedColumn.Order + 1);
-            for (int i = 0; i < Columns.Count; i++)
-                Columns[i].Order = i;
+            //Columns.Swap(selectedColumn.Order, selectedColumn.Order + 1);
+            //for (int i = 0; i < Columns.Count; i++)
+            //    Columns[i].Order = i;
 
-            dgAdminOlIndexList.ItemsSource =
-                new ObservableCollection<AdminOlIndexList>(Columns.OrderBy(x => x.Order).ToList());
+            //dgAdminOlIndexList.ItemsSource =
+            //    new ObservableCollection<AdminOlIndexList>(Columns.OrderBy(x => x.Order).ToList());
 
         }
 
