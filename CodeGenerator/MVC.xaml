@@ -726,6 +726,7 @@
                                         <!--<Button x:Name="btnSelectCreateField2" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>-->
                                         <CheckBox x:Name="chkViewHaveOtherSeo" IsChecked="True"  Content="Is View have seo ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="281,5,0,0" />
                                         <CheckBox x:Name="chkAdminEditView" IsChecked="True"  Content="Is generate edit view ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="281,21,0,0" />
+                                        <CheckBox x:Name="chkHaveAdminOlCreateView"  IsChecked="True"  Content="Is generate AdminOlCreateViewModel View ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0" />
 
                                         <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="btnGenerateAdminCreateView_Click"  Margin="544,10,0,0"/>
 

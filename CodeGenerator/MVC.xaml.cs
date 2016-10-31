@@ -188,9 +188,11 @@ namespace CodeGenerator
 
         private static string AdminCreateViewFileName = "Create.cshtml";
         private string AdminCreateViewRoot = _viewRoot + @"\" + AdminCreateViewFileName;
+        private string AdminOlCreateViewRoot = _viewOlRoot + @"\" + AdminCreateViewFileName;
 
         private static string AdminEditViewFileName = "Edit.cshtml";
         private string AdminEditViewRoot = _viewRoot + @"\" + AdminEditViewFileName;
+        private string AdminOlEditViewRoot = _viewOlRoot + @"\" + AdminEditViewFileName;
 
 
         private static string AdminDetailsViewFileName = "Details.cshtml";
@@ -213,9 +215,11 @@ namespace CodeGenerator
 
         private static string AdminCreateJSFileName = "Create.js";
         private string AdminCreateJSRoot = _jSRoot + @"\" + AdminCreateJSFileName;
+        private string AdminOlCreateJSRoot = _jSOlRoot + @"\" + AdminCreateJSFileName;
 
         private static string AdminEditJSFileName = "Edit.js";
         private string AdminEditJSRoot = _jSRoot + @"\" + AdminEditJSFileName;
+        private string AdminOlEditJSRoot = _jSOlRoot + @"\" + AdminEditJSFileName;
 
 
 
@@ -396,6 +400,12 @@ namespace CodeGenerator
                 Directory.CreateDirectory(_jSRoot);
         }
 
+        private void CheckJSOlFolder()
+        {
+            if (!Directory.Exists(_jSOlRoot))
+                Directory.CreateDirectory(_jSOlRoot);
+        }
+
         private void CheckContractsFolder()
         {
             if (!Directory.Exists(_contractsRoot))
@@ -487,15 +497,20 @@ namespace CodeGenerator
             AreaName = txtArea.Text;
 
             AdminCreateViewRoot = _viewRoot + @"\" + AdminCreateViewFileName;
+            AdminOlCreateViewRoot = _viewOlRoot + @"\" + AdminCreateViewFileName;
 
             AdminEditViewRoot = _viewRoot + @"\" + AdminEditViewFileName;
+            AdminOlEditViewRoot = _viewOlRoot + @"\" + AdminEditViewFileName;
+
             AdminDetailsViewRoot = _viewRoot + @"\" + AdminDetailsViewFileName;
 
             _jSRoot = _modelRoot + @"\JS" + @"\" + _controllerName;
             AdminIndexJSRoot = _jSRoot + @"\" + AdminIndexJSFileName;
             AdminOlIndexJSRoot = _jSOlRoot + @"\" + AdminIndexJSFileName;
             AdminCreateJSRoot = _jSRoot + @"\" + AdminCreateJSFileName;
+            AdminOlCreateJSRoot = _jSOlRoot + @"\" + AdminCreateJSFileName;
             AdminEditJSRoot = _jSRoot + @"\" + AdminEditJSFileName;
+            AdminOlEditJSRoot = _jSOlRoot + @"\" + AdminEditJSFileName;
 
 
         }
@@ -2529,6 +2544,7 @@ namespace CodeGenerator
             CheckTempFolder();
             CheckModelFolder();
             CheckViewFolder();
+            CheckViewOlFolder();
             CreateFile(AdminCreateViewRoot);
 
             WriteAdminCreateViewElements(AdminCreateViewRoot);
@@ -2539,6 +2555,21 @@ namespace CodeGenerator
                 WriteAdminEditViewElements(AdminEditViewRoot);
                 btnGenerateAdminEditJS();
             }
+
+            if (chkHaveAdminOlCreateView.IsChecked == true)
+            {
+                CreateFile(AdminCreateViewRoot);
+
+                WriteAdminOlCreateViewElements(AdminOlCreateViewRoot);
+                btnGenerateAdminOlCreateJS();
+                if (chkAdminEditView.IsChecked == true)
+                {
+                    CreateFile(AdminOlEditViewRoot);
+                    WriteAdminOlEditViewElements(AdminOlEditViewRoot);
+                    btnGenerateAdminOlEditJS();
+                }
+            }
+
         }
 
         private void WriteAdminCreateViewElements(string fileName)
@@ -2745,6 +2776,139 @@ namespace CodeGenerator
                     sw.WriteLine("   @Scripts.Render(\"~/ckeditor/adapters/jquery.js\")");
                 }
                 sw.WriteLine("   @Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/" + _controllerName + "/Create.js\"))");
+                sw.WriteLine("}");
+
+            }
+        }
+
+        // AdminOlCreateView
+        private void WriteAdminOlCreateViewElements(string fileName)
+        {
+            var model = new AdminCreateView()
+            {
+                _items = (ObservableCollection<AdminCreateViewItem>)dgAdminCreateView.ItemsSource
+            };
+
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlCreateName);
+                sw.WriteLine("");
+
+                sw.WriteLine("@{");
+                sw.WriteLine("    Layout = Url.Content(MVC." + AreaName + ".Shared.Views._" + AreaName + "Layout);");
+                sw.WriteLine("}");
+
+                sw.WriteLine("");
+
+                sw.WriteLine("@section Title{");
+                sw.WriteLine(" ثبت زبان جدید  " + ModelPersianName);
+                sw.WriteLine("}");
+                sw.WriteLine("@section PageHeader{");
+                sw.WriteLine(" ثبت زبان جدید  " + ModelPersianName);
+                sw.WriteLine("}");
+
+
+                sw.WriteLine("<div class=\"col-lg-12 col-sm-12 col-xs-12\">");
+                sw.WriteLine("    <div class=\"widget radius-bordered\">");
+                sw.WriteLine("        <div class=\"widget-header\">");
+                sw.WriteLine("            <span class=\"widget-caption\">ثبت زبان جدید  " + ModelPersianName + " </span>");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("        <div class=\"widget-body\">");
+                sw.WriteLine("");
+                sw.WriteLine("            @using (Html.BeginForm(");
+                sw.WriteLine("                MVC." + AreaName + "." + _controllerName + ".ActionNames.CreateLanguage,");
+                sw.WriteLine("                MVC." + AreaName + "." + _controllerName + ".Name,");
+                sw.WriteLine("                FormMethod.Post,");
+                sw.WriteLine("                new");
+                sw.WriteLine("                {");
+                sw.WriteLine("                    area = MVC." + AreaName + ".Name,");
+                sw.WriteLine("                    @class = \"form-horizontal bv-form\"");
+                sw.WriteLine("                }))");
+                sw.WriteLine("            {");
+                sw.WriteLine("                @Html.AntiForgeryToken()");
+                sw.WriteLine("                @Html.ValidationSummary(true)");
+                sw.WriteLine("                @Html.HiddenFor(model => model." + _modelName + "Id)");
+                sw.WriteLine("");
+
+                sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                sw.WriteLine("                    @Html.LabelFor(model => model.Language, new { @class = \"col-lg-2 control-label\" })");
+                sw.WriteLine("                    <div class=\"col-lg-10\">");
+                sw.WriteLine("                        @Html.DropDownListFor(model => model.Language, new SelectList(Model.CurrentLanguageList.ToList(), \"Id\", \"Title\") )");
+                sw.WriteLine("                    </div>");
+                sw.WriteLine("                </div>");
+
+                foreach (var field in model._items)
+                {
+
+                    if (field.IsTextBox)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.TextBoxFor(model => model." + field.Key + ", new { @class = \"form-control\" })");
+                        sw.WriteLine("                        @Html.ValidationMessageFor(model => model." + field.Key + ", null, new { @class = \"help-block\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                    if (field.IsTextArea)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.TextAreaFor(model => model." + field.Key + ", new { @class = \"form-control\" })");
+                        sw.WriteLine("                        @Html.ValidationMessageFor(model => model." + field.Key + ", null, new { @class = \"help-block\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                    if (field.IsLabel)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.DisplayFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                }
+
+
+                sw.WriteLine("");
+
+
+
+                if (chkViewHaveOtherSeo.IsChecked == true)
+                {
+                    sw.WriteLine("                @Html.Partial(MVC.Shared.Views.Partial._BaseSeoView, Model)");
+                }
+
+                sw.WriteLine("");
+                sw.WriteLine("");
+                sw.WriteLine("                <div class=\"form-group\">");
+                sw.WriteLine("                    <div class=\"col-lg-offset-4 col-lg-8\">");
+                sw.WriteLine("                        <input class=\"btn btn-palegreen col-lg-3\" type=\"submit\" value=\"ثبت\">");
+                sw.WriteLine("                    </div>");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("");
+                sw.WriteLine("            }");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("    </div>");
+                sw.WriteLine("</div>");
+                sw.WriteLine("");
+
+
+                sw.WriteLine("@section Scripts {");
+                sw.WriteLine("   @Scripts.Render(\"~/bundles/jqueryval\")");
+                if (model._items.Any(x => x.IsCkEditor))
+                {
+                    sw.WriteLine("   @Scripts.Render(\"~/ckeditor/ckeditor.js\")");
+                    sw.WriteLine("   @Scripts.Render(\"~/ckeditor/adapters/jquery.js\")");
+                }
+                sw.WriteLine("    @Scripts.Render(Url.Content(\"~/Content/ViewJs/Shared/CustomErrorScript.js\"))");
+                sw.WriteLine("    @Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/Ol" + _controllerName + "/Create.js\"))");
                 sw.WriteLine("}");
 
             }
@@ -2963,6 +3127,140 @@ namespace CodeGenerator
             }
         }
 
+        // AdminOlEditView
+        private void WriteAdminOlEditViewElements(string fileName)
+        {
+            var model = new AdminCreateView()
+            {
+                _items = (ObservableCollection<AdminCreateViewItem>)dgAdminCreateView.ItemsSource
+            };
+
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlEditName);
+                sw.WriteLine("");
+
+                sw.WriteLine("@{");
+                sw.WriteLine("    Layout = Url.Content(MVC." + AreaName + ".Shared.Views._" + AreaName + "Layout);");
+                sw.WriteLine("}");
+
+                sw.WriteLine("");
+
+                sw.WriteLine("@section Title{");
+                sw.WriteLine(" ویرایش زبان  " + ModelPersianName);
+                sw.WriteLine("}");
+                sw.WriteLine("@section PageHeader{");
+                sw.WriteLine(" ویرایش زبان  " + ModelPersianName);
+                sw.WriteLine("}");
+
+
+                sw.WriteLine("<div class=\"col-lg-12 col-sm-12 col-xs-12\">");
+                sw.WriteLine("    <div class=\"widget radius-bordered\">");
+                sw.WriteLine("        <div class=\"widget-header\">");
+                sw.WriteLine("            <span class=\"widget-caption\">ویرایش زبان  " + ModelPersianName + " </span>");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("        <div class=\"widget-body\">");
+                sw.WriteLine("");
+                sw.WriteLine("            @using (Html.BeginForm(");
+                sw.WriteLine("                MVC." + AreaName + "." + _controllerName + ".ActionNames.EditLanguage,");
+                sw.WriteLine("                MVC." + AreaName + "." + _controllerName + ".Name,");
+                sw.WriteLine("                FormMethod.Post,");
+                sw.WriteLine("                new");
+                sw.WriteLine("                {");
+                sw.WriteLine("                    area = MVC." + AreaName + ".Name,");
+                sw.WriteLine("                    @class = \"form-horizontal bv-form\"");
+                sw.WriteLine("                }))");
+                sw.WriteLine("            {");
+                sw.WriteLine("                @Html.AntiForgeryToken()");
+                sw.WriteLine("                @Html.ValidationSummary(true)");
+                sw.WriteLine("                @Html.HiddenFor(model => model." + _modelName + "Id)");
+                sw.WriteLine("                @Html.HiddenFor(model => model.Id)");
+                sw.WriteLine("");
+
+                sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                sw.WriteLine("                    @Html.LabelFor(model => model.Language, new { @class = \"col-lg-2 control-label\" })");
+                sw.WriteLine("                    <div class=\"col-lg-10\">");
+                sw.WriteLine("                        @Html.DropDownListFor(model => model.Language, new SelectList(Model.CurrentLanguageList.ToList(), \"Id\", \"Title\") )");
+                sw.WriteLine("                    </div>");
+                sw.WriteLine("                </div>");
+
+                foreach (var field in model._items)
+                {
+
+                    if (field.IsTextBox)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.TextBoxFor(model => model." + field.Key + ", new { @class = \"form-control\" })");
+                        sw.WriteLine("                        @Html.ValidationMessageFor(model => model." + field.Key + ", null, new { @class = \"help-block\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                    if (field.IsTextArea)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.TextAreaFor(model => model." + field.Key + ", new { @class = \"form-control\" })");
+                        sw.WriteLine("                        @Html.ValidationMessageFor(model => model." + field.Key + ", null, new { @class = \"help-block\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                    if (field.IsLabel)
+                    {
+                        sw.WriteLine("                <div class=\"form-group has-feedback \">");
+                        sw.WriteLine("                    @Html.DisplayFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    <div class=\"col-lg-10\">");
+                        sw.WriteLine("                        @Html.LabelFor(model => model." + field.Key + ", new { @class = \"col-lg-2 control-label\" })");
+                        sw.WriteLine("                    </div>");
+                        sw.WriteLine("                </div>");
+                    }
+
+                }
+
+
+                sw.WriteLine("");
+
+
+
+                if (chkViewHaveOtherSeo.IsChecked == true)
+                {
+                    sw.WriteLine("                @Html.Partial(MVC.Shared.Views.Partial._BaseSeoView, Model)");
+                }
+
+                sw.WriteLine("");
+                sw.WriteLine("");
+                sw.WriteLine("                <div class=\"form-group\">");
+                sw.WriteLine("                    <div class=\"col-lg-offset-4 col-lg-8\">");
+                sw.WriteLine("                        <input class=\"btn btn-palegreen col-lg-3\" type=\"submit\" value=\"ویرایش\">");
+                sw.WriteLine("                    </div>");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("");
+                sw.WriteLine("            }");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("    </div>");
+                sw.WriteLine("</div>");
+                sw.WriteLine("");
+
+
+                sw.WriteLine("@section Scripts {");
+                sw.WriteLine("   @Scripts.Render(\"~/bundles/jqueryval\")");
+                if (model._items.Any(x => x.IsCkEditor))
+                {
+                    sw.WriteLine("   @Scripts.Render(\"~/ckeditor/ckeditor.js\")");
+                    sw.WriteLine("   @Scripts.Render(\"~/ckeditor/adapters/jquery.js\")");
+                }
+                sw.WriteLine("");
+                sw.WriteLine("    @Scripts.Render(Url.Content(\"~/Content/ViewJs/Shared/CustomErrorScript.js\"))");
+                sw.WriteLine("    @Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/Ol" + _controllerName + "/Edit.js\"))");
+                sw.WriteLine("}");
+
+            }
+        }
 
         // AdminDetailsView
         private void WriteAdminDetailsViewElements(string fileName, string tableName)
@@ -3326,7 +3624,7 @@ namespace CodeGenerator
             FillRootDirectory();
             CheckTempFolder();
             CheckModelFolder();
-            CheckJSFolder();
+            CheckJSOlFolder();
             CreateFile(AdminOlIndexJSRoot);
 
             WriteAdminOlIndexJSElements(AdminOlIndexJSRoot);
@@ -3415,7 +3713,6 @@ namespace CodeGenerator
 
             WriteAdminCreateJSElements(AdminCreateJSRoot);
         }
-
         private void WriteAdminCreateJSElements(string fileName)
         {
             var model = new AdminCreateView()
@@ -3635,6 +3932,48 @@ namespace CodeGenerator
             }
         }
 
+        // AdminOlCreateJS
+        private void btnGenerateAdminOlCreateJS()
+        {
+            FillRootDirectory();
+            CheckTempFolder();
+            CheckModelFolder();
+            CheckJSOlFolder();
+            CreateFile(AdminOlCreateJSRoot);
+
+            WriteAdminOlCreateJSElements(AdminOlCreateJSRoot);
+        }
+        private void WriteAdminOlCreateJSElements(string fileName)
+        {
+            var model = new AdminCreateView()
+            {
+                _items = (ObservableCollection<AdminCreateViewItem>)dgAdminCreateView.ItemsSource
+            };
+
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("");
+
+                sw.WriteLine("(function () {");
+                sw.WriteLine("    $(function () {");
+                sw.WriteLine("        \"use strict \";");
+                sw.WriteLine("");
+
+                sw.WriteLine("        $(document).ready(function () {");
+
+                foreach (var field in model._items.Where(x => x.IsCkEditor).ToList())
+                {
+                    sw.WriteLine("            $('#" + field.Key + "').ckeditor();");
+                }
+
+                sw.WriteLine("");
+                sw.WriteLine("        });");
+                sw.WriteLine("    });");
+                sw.WriteLine("})();");
+
+            }
+        }
 
         // AdminEditJS
         private void btnGenerateAdminEditJS()
@@ -3647,7 +3986,6 @@ namespace CodeGenerator
 
             WriteAdminEditJSElements(AdminEditJSRoot);
         }
-
         private void WriteAdminEditJSElements(string fileName)
         {
             var model = new AdminCreateView()
@@ -3839,6 +4177,54 @@ namespace CodeGenerator
 
 
                 sw.WriteLine("");
+                sw.WriteLine("    });");
+                sw.WriteLine("})();");
+
+
+
+
+
+
+            }
+        }
+
+
+        // AdminOlEditJS
+        private void btnGenerateAdminOlEditJS()
+        {
+            FillRootDirectory();
+            CheckTempFolder();
+            CheckModelFolder();
+            CheckJSFolder();
+            CreateFile(AdminOlEditJSRoot);
+
+            WriteAdminOlEditJSElements(AdminOlEditJSRoot);
+        }
+        private void WriteAdminOlEditJSElements(string fileName)
+        {
+            var model = new AdminCreateView()
+            {
+                _items = (ObservableCollection<AdminCreateViewItem>)dgAdminCreateView.ItemsSource
+            };
+
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("");
+
+                sw.WriteLine("(function () {");
+                sw.WriteLine("    $(function () {");
+                sw.WriteLine("        \"use strict \";");
+                sw.WriteLine("");
+
+                sw.WriteLine("        $(document).ready(function () {");
+
+                foreach (var field in model._items.Where(x => x.IsCkEditor).ToList())
+                {
+                    sw.WriteLine("            $('#" + field.Key + "').ckeditor();");
+                }
+                sw.WriteLine("");
+                sw.WriteLine("        });");
                 sw.WriteLine("    });");
                 sw.WriteLine("})();");
 
