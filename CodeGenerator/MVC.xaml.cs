@@ -118,7 +118,7 @@ namespace CodeGenerator
         private static string _modelName = "";
         private static string _modelRoot = MainRoot + @"\" + _modelName;
         private static string _viewModelRoot = _modelRoot + @"\ViewModels";
-        private static string _contractsRoot = _viewModelRoot + @"\Contracts";
+        private static string _contractsRoot = _viewModelRoot + @"\Interface";
 
         private static string IAdminIndexListName = "I" + _modelName + "AdminIndexListViewModel";
         private static string IAdminIndexListFileName = "I" + _modelName + "AdminIndexListViewModel.cs";
@@ -396,6 +396,10 @@ namespace CodeGenerator
             if (!File.Exists(path))
             {
                 var myFile = File.Create(path);
+
+                var info = new UTF8Encoding(true).GetBytes("//Generate by CodeGenerator ");
+                myFile.Write(info, 0, info.Length);
+
                 myFile.Close();
             }
         }
@@ -1004,7 +1008,7 @@ namespace CodeGenerator
                 //namespace
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
-                sw.WriteLine("    public class " + AdminCreateName + (chkVmHaveOtherSeo.IsChecked == true ? " : SeoBaseViewModel" : ""));
+                sw.WriteLine("    public class " + AdminCreateName + (chkVmHaveOtherSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
@@ -1075,7 +1079,7 @@ namespace CodeGenerator
                 //namespace
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
-                sw.WriteLine("    public class " + AdminCreateName + (chkVmHaveOtherSeo.IsChecked == true ? " : SeoBaseViewModel" : ""));
+                sw.WriteLine("    public class " + AdminCreateName + (chkVmHaveOtherSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
@@ -1283,7 +1287,8 @@ namespace CodeGenerator
                 //namespace
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
-                sw.WriteLine("    public class " + AdminEditName);
+                //sw.WriteLine("    public class " + AdminEditName);
+                sw.WriteLine("    public class " + AdminEditName + (chkVmHaveOtherSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
@@ -1408,7 +1413,7 @@ namespace CodeGenerator
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
                 //sw.WriteLine("    public class " + AdminDetailsName);
-                sw.WriteLine("    public class " + AdminCreateName + (chkAdminDetailsHaveSeo.IsChecked == true ? " : SeoBaseViewModel" : ""));
+                sw.WriteLine("    public class " + AdminDetailsName + (chkAdminDetailsHaveSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
@@ -1420,7 +1425,7 @@ namespace CodeGenerator
                             _selectedFieldForAdminDetailsObser.First(x => x.Field == property["Name"].ToString());
                         //if (!currentAdmin.IsKey)
                         WriteDisplayName(sw, currentAdmin.Display);
-                        sw.WriteLine("        " + property["Type"] + " " + property["Name"] + " { get; set; }");
+                        sw.WriteLine("        public " + property["Type"] + " " + property["Name"] + " { get; set; }");
                         sw.WriteLine("");
                     }
                 }
@@ -2104,6 +2109,7 @@ namespace CodeGenerator
         {
             var model = new AdminIndexView()
             {
+                isHaveHeadButton = true,
                 _items = (ObservableCollection<AdminIndexViewItem>)dgAdminIndexView.ItemsSource
             };
             using (var sw = File.AppendText(fileName))
@@ -2485,6 +2491,7 @@ namespace CodeGenerator
                     sw.WriteLine("   @Scripts.Render(\"~/ckeditor/adapters/jquery.js\")");
                 }
                 sw.WriteLine("   @Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/" + _controllerName + "/Create.js\"))");
+                sw.WriteLine("}");
 
             }
         }
@@ -2535,10 +2542,10 @@ namespace CodeGenerator
                 sw.WriteLine("");
 
                 sw.WriteLine("@section Title{");
-                sw.WriteLine(" ثبت " + ModelPersianName);
+                sw.WriteLine(" ویرایش " + ModelPersianName);
                 sw.WriteLine("}");
                 sw.WriteLine("@section PageHeader{");
-                sw.WriteLine(" ثبت " + ModelPersianName);
+                sw.WriteLine(" ویرایش " + ModelPersianName);
                 sw.WriteLine("}");
 
 
@@ -2547,7 +2554,7 @@ namespace CodeGenerator
                 sw.WriteLine("<div class=\"col-lg-12 col-sm-12 col-xs-12\">");
                 sw.WriteLine("    <div class=\"widget radius-bordered\">");
                 sw.WriteLine("        <div class=\"widget-header\">");
-                sw.WriteLine("            <span class=\"widget-caption\">ثبت " + ModelPersianName + " جدید</span>");
+                sw.WriteLine("            <span class=\"widget-caption\">ویرایش " + ModelPersianName + " جدید</span>");
                 sw.WriteLine("        </div>");
                 sw.WriteLine("        <div class=\"widget-body\">");
                 sw.WriteLine("");
@@ -2697,6 +2704,7 @@ namespace CodeGenerator
                     sw.WriteLine("   @Scripts.Render(\"~/ckeditor/adapters/jquery.js\")");
                 }
                 sw.WriteLine("   @Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/" + _controllerName + "/Edit.js\"))");
+                sw.WriteLine("}");
 
             }
         }
