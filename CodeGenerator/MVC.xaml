@@ -633,10 +633,11 @@
                                         <CheckBox x:Name="chkVmHaveOtherSeo" IsChecked="True"  Content="Is ViewModel have seo fields ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,0,0,0" />
                                         <Button Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>
                                         <CheckBox x:Name="chkGenerateEditVM" IsChecked="True"  Content="Is generate edit viewModel ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,21,0,0" />
+                                        <CheckBox x:Name="chkHaveAdminOlCreateVM"  IsChecked="True"  Content="Is generate AdminOlCreateViewModel ViewModel ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,42,0,0" />
 
                                         <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnGenerateAdminCreate_OnClick"  Margin="544,10,0,0"/>
 
-                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminCreateViewModel" Margin="0,37,0,0">
+                                        <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminCreateViewModel" Margin="0,64,0,0">
                                             <TabControl.ItemTemplate>
                                                 <!-- this is the header template-->
                                                 <DataTemplate>
@@ -947,7 +948,7 @@
 
                                     </Grid>
                                 </TabItem>-->
-                                <TabItem Header="AdminOlCreate" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                <!--<TabItem Header="AdminOlCreate" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
                                     <Grid Background="#FFE5E5E5">
                                         <Button x:Name="btnSelectCreateOlField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateOlField_OnClick" Margin="10,10,0,0"/>
 
@@ -955,13 +956,11 @@
 
                                         <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminOlCreate" Margin="0,37,0,0">
                                             <TabControl.ItemTemplate>
-                                                <!-- this is the header template-->
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Field}" />
                                                 </DataTemplate>
                                             </TabControl.ItemTemplate>
                                             <TabControl.ContentTemplate>
-                                                <!-- this is the body of the TabItem template-->
                                                 <DataTemplate>
                                                     <StackPanel>
                                                         <DockPanel  >
@@ -1032,8 +1031,8 @@
                                         </TabControl>
 
                                     </Grid>
-                                </TabItem>
-                                <TabItem Header="AdminOlEdit" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
+                                </TabItem>-->
+                                <!--<TabItem Header="AdminOlEdit" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
                                     <Grid Background="#FFE5E5E5">
                                         <Button x:Name="btnSelectEditOlField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectEditOlField_OnClick" Margin="10,10,0,0"/>
 
@@ -1041,13 +1040,13 @@
 
                                         <TabControl ItemsSource="{Binding Tabs}" x:Name="TabControlAdminOlEdit" Margin="0,37,0,0">
                                             <TabControl.ItemTemplate>
-                                                <!-- this is the header template-->
+                                                --><!-- this is the header template--><!--
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Field}" />
                                                 </DataTemplate>
                                             </TabControl.ItemTemplate>
                                             <TabControl.ContentTemplate>
-                                                <!-- this is the body of the TabItem template-->
+                                                --><!-- this is the body of the TabItem template--><!--
                                                 <DataTemplate>
                                                     <StackPanel>
                                                         <DockPanel  >
@@ -1118,7 +1117,7 @@
                                         </TabControl>
 
                                     </Grid>
-                                </TabItem>
+                                </TabItem>-->
                             </TabControl>
                         </TabItem>
                     </TabControl>

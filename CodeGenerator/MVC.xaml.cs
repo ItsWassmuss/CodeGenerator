@@ -1012,6 +1012,14 @@ namespace CodeGenerator
             WriteAdminCreateElements(AdminCreateRoot, _tableName);
             if (chkGenerateEditVM.IsChecked == true)
                 BtnGenerateAdminEdit();
+
+            if (chkHaveAdminOlCreateVM.IsChecked == true)
+            {
+                BtnGenerateAdminOlCreate();
+                if (chkGenerateEditVM.IsChecked == true)
+                    BtnGenerateAdminOlEdit();
+            }
+
         }
 
         private void WriteAdminCreateElements(string fileName, string tableName)
@@ -1253,34 +1261,6 @@ namespace CodeGenerator
         }
 
         // AdminEdit
-        private void BtnSelectEditField_OnClick(object sender, RoutedEventArgs e)
-        {
-            //if (SelectedTable.Length == 0)
-            //    return;
-
-            //CallSelectionFieldWindow();
-
-            //FillAdminEdit();
-        }
-
-        //private void FillAdminEdit()
-        //{
-        //    FilldgAdminEdit();
-        //}
-
-        //private ObservableCollection<AdminCreate> _selectedFieldForAdminEditObser = new ObservableCollection<AdminCreate>();
-
-        //private void FilldgAdminEdit()
-        //{
-        //    _selectedFieldForAdminEditObser =
-        //        new ObservableCollection<AdminCreate>(GenerateFiledList.Select(x => new AdminCreate()
-        //        {
-        //            Field = x,
-        //            Display = x,
-        //        }).ToList());
-        //    //TabControlAdminEditViewModel.ItemsSource = _selectedFieldForAdminEditObser;
-
-        //}
 
         private void BtnGenerateAdminEdit()
         {
@@ -1753,23 +1733,23 @@ namespace CodeGenerator
             FilldgAdminOlCreate();
         }
 
-        private ObservableCollection<AdminOlCreate> _selectedFieldForAdminOlCreateObser =
-            new ObservableCollection<AdminOlCreate>();
+        //private ObservableCollection<AdminOlCreate> _selectedFieldForAdminOlCreateObser =
+        //    new ObservableCollection<AdminOlCreate>();
 
         private void FilldgAdminOlCreate()
         {
-            _selectedFieldForAdminOlCreateObser =
-                new ObservableCollection<AdminOlCreate>(GenerateFiledList.Select(x => new AdminOlCreate()
-                {
-                    Field = x,
-                    Display = x,
+            //_selectedFieldForAdminOlCreateObser =
+            //    new ObservableCollection<AdminOlCreate>(GenerateFiledList.Select(x => new AdminOlCreate()
+            //    {
+            //        Field = x,
+            //        Display = x,
 
-                }).ToList());
-            TabControlAdminOlCreate.ItemsSource = _selectedFieldForAdminOlCreateObser;
+            //    }).ToList());
+            //TabControlAdminOlCreate.ItemsSource = _selectedFieldForAdminOlCreateObser;
 
         }
 
-        private void BtnGenerateAdminOlCreate_OnClick(object sender, RoutedEventArgs e)
+        private void BtnGenerateAdminOlCreate()
         {
             FillRootDirectory();
             CheckTempFolder();
@@ -1792,23 +1772,29 @@ namespace CodeGenerator
                 //namespace
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
-                sw.WriteLine("    public class " + AdminOlCreateName);
+                //sw.WriteLine("    public class " + AdminOlCreateName);
+                sw.WriteLine("    public class " + AdminOlCreateName + (chkVmHaveOtherSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
+                sw.WriteLine("        [ScaffoldColumn(false)]");
+                sw.WriteLine("        public int " + _modelName + "Id { get; set; }");
+                sw.WriteLine("");
+
+
                 foreach (DataRow property in columns.Rows)
                 {
-                    if (_selectedFieldForAdminOlCreateObser.Any(x => x.Field == property["Name"].ToString()))
+                    if (_selectedFieldForAdminCreateObser.Any(x => x.Field == property["Name"].ToString() && x.IsUseInOl))
                     {
                         var currentAdmin =
-                            _selectedFieldForAdminOlCreateObser.First(x => x.Field == property["Name"].ToString());
+                            _selectedFieldForAdminCreateObser.First(x => x.Field == property["Name"].ToString());
 
-                        if (currentAdmin.IsKey)
-                        {
-                            WriteNormalProperty(sw, property);
-                            sw.WriteLine("");
-                            continue;
-                        }
+                        //if (currentAdmin.IsKey)
+                        //{
+                        //    WriteNormalProperty(sw, property);
+                        //    sw.WriteLine("");
+                        //    continue;
+                        //}
 
                         WriteDisplayName(sw, currentAdmin.Display);
 
@@ -1842,7 +1828,6 @@ namespace CodeGenerator
                 sw.WriteLine("");
                 sw.WriteLine("        public List<OthereLanguage> CurrentLanguageList = new List<OthereLanguage>();");
                 sw.WriteLine("");
-
 
                 sw.WriteLine("    }");
                 sw.WriteLine("}");
@@ -1881,23 +1866,23 @@ namespace CodeGenerator
             FilldgAdminOlEdit();
         }
 
-        private ObservableCollection<AdminOlEdit> _selectedFieldForAdminOlEditObser =
-            new ObservableCollection<AdminOlEdit>();
+        //private ObservableCollection<AdminOlEdit> _selectedFieldForAdminOlEditObser =
+        //    new ObservableCollection<AdminOlEdit>();
 
         private void FilldgAdminOlEdit()
         {
-            _selectedFieldForAdminOlEditObser =
-                new ObservableCollection<AdminOlEdit>(GenerateFiledList.Select(x => new AdminOlEdit()
-                {
-                    Field = x,
-                    Display = x,
+            //_selectedFieldForAdminOlEditObser =
+            //    new ObservableCollection<AdminOlEdit>(GenerateFiledList.Select(x => new AdminOlEdit()
+            //    {
+            //        Field = x,
+            //        Display = x,
 
-                }).ToList());
-            TabControlAdminOlEdit.ItemsSource = _selectedFieldForAdminOlEditObser;
+            //    }).ToList());
+            //TabControlAdminOlEdit.ItemsSource = _selectedFieldForAdminOlEditObser;
 
         }
 
-        private void BtnGenerateAdminOlEdit_OnClick(object sender, RoutedEventArgs e)
+        private void BtnGenerateAdminOlEdit()
         {
             FillRootDirectory();
             CheckTempFolder();
@@ -1920,23 +1905,33 @@ namespace CodeGenerator
                 //namespace
                 sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
                 sw.WriteLine("{");
-                sw.WriteLine("    public class " + AdminOlEditName);
+                //sw.WriteLine("    public class " + AdminOlEditName);
+                sw.WriteLine("    public class " + AdminOlEditName + (chkVmHaveOtherSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
                 sw.WriteLine("    {");
                 sw.WriteLine("");
 
+                sw.WriteLine("        [ScaffoldColumn(false)]");
+                sw.WriteLine("        public int " + _modelName + "Id { get; set; }");
+                sw.WriteLine("");
+
+                sw.WriteLine("        [ScaffoldColumn(false)]");
+                sw.WriteLine("        public int Id { get; set; }");
+                sw.WriteLine("");
+
+
                 foreach (DataRow property in columns.Rows)
                 {
-                    if (_selectedFieldForAdminOlEditObser.Any(x => x.Field == property["Name"].ToString()))
+                    if (_selectedFieldForAdminCreateObser.Any(x => x.Field == property["Name"].ToString() && x.IsUseInOl))
                     {
                         var currentAdmin =
-                            _selectedFieldForAdminOlEditObser.First(x => x.Field == property["Name"].ToString());
+                            _selectedFieldForAdminCreateObser.First(x => x.Field == property["Name"].ToString());
 
-                        if (currentAdmin.IsKey)
-                        {
-                            WriteNormalProperty(sw, property);
-                            sw.WriteLine("");
-                            continue;
-                        }
+                        //if (currentAdmin.IsKey)
+                        //{
+                        //    WriteNormalProperty(sw, property);
+                        //    sw.WriteLine("");
+                        //    continue;
+                        //}
 
                         WriteDisplayName(sw, currentAdmin.Display);
 

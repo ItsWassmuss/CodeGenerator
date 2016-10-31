@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CodeGenerator.Model
 {
@@ -48,6 +49,8 @@ namespace CodeGenerator.Model
         public bool IsImage { get; set; }
         public bool IsLanguage { get; set; }
         public bool IsUseInOl { get; set; }
+
+        //public ComboBoxItem UseType { get; set; }
 
     }
 }
