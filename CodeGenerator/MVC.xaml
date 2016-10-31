@@ -571,6 +571,7 @@
                                 <TabItem Header="View" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" >
                                     <Grid Background="#FFE5E5E5">
                                         <!--<Button x:Name="btnSelectCreateField2" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="BtnSelectCreateField_OnClick" Margin="10,10,0,0"/>-->
+                                        <CheckBox x:Name="chkHaveAdminOlIndexView"  IsChecked="True"  Content="Is Generate AdminOlIndexViewModel View ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" />
 
                                         <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Click="btnGenerateAdminIndexView_Click"  Margin="544,10,0,0"/>
 

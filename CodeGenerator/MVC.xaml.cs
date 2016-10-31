@@ -175,11 +175,14 @@ namespace CodeGenerator
 
         private static string _controllerName = "***************************"; //txtController.Text
         private static string _viewRoot = _modelRoot + @"\Views" + @"\" + _controllerName;
+        private static string _viewOlRoot = _modelRoot + @"\ViewsOl" + @"\" + _controllerName;
 
         private static string AdminIndexViewFileName = "Index.cshtml";
         private static string AdminListViewFileName = "_List.cshtml";
         private string AdminIndexViewRoot = _viewRoot + @"\" + AdminIndexViewFileName;
         private string AdminListViewRoot = _viewRoot + @"\" + AdminListViewFileName;
+        private string AdminOlIndexViewRoot = _viewOlRoot + @"\" + AdminIndexViewFileName;
+        private string AdminOlListViewRoot = _viewRoot + @"\" + AdminListViewFileName;
         private static string ModelPersianName = "مقاله"; //txtModelPersianName.Text;
         private static string AreaName = "Article"; //txtArea.Text;
 
@@ -198,12 +201,14 @@ namespace CodeGenerator
         //            "***************************"      Views      "***************************"
 
         private static string _jSRoot = _modelRoot + @"\JS" + @"\" + _controllerName;
+        private static string _jSOlRoot = _modelRoot + @"\JS" + @"\" + _controllerName + "Ol";
 
 
 
 
         private static string AdminIndexJSFileName = "Index.js";
         private string AdminIndexJSRoot = _jSRoot + @"\" + AdminIndexJSFileName;
+        private string AdminOlIndexJSRoot = _jSOlRoot + @"\" + AdminIndexJSFileName;
 
 
         private static string AdminCreateJSFileName = "Create.js";
@@ -379,6 +384,12 @@ namespace CodeGenerator
                 Directory.CreateDirectory(_viewRoot);
         }
 
+        private void CheckViewOlFolder()
+        {
+            if (!Directory.Exists(_viewOlRoot))
+                Directory.CreateDirectory(_viewOlRoot);
+        }
+
         private void CheckJSFolder()
         {
             if (!Directory.Exists(_jSRoot))
@@ -464,11 +475,14 @@ namespace CodeGenerator
 
             _controllerName = txtController.Text;
             _viewRoot = _modelRoot + @"\Views" + @"\" + _controllerName + @"\Views";
+            _viewOlRoot = _modelRoot + @"\ViewsOl" + @"\" + _controllerName;
 
             AdminIndexViewFileName = "Index.cshtml";
             AdminListViewFileName = "_List.cshtml";
             AdminIndexViewRoot = _viewRoot + @"\" + AdminIndexViewFileName;
             AdminListViewRoot = _viewRoot + @"\" + AdminListViewFileName;
+            AdminOlIndexViewRoot = _viewOlRoot + @"\" + AdminIndexViewFileName;
+            AdminOlListViewRoot = _viewOlRoot + @"\" + AdminListViewFileName;
             ModelPersianName = txtModelPersianName.Text;
             AreaName = txtArea.Text;
 
@@ -479,6 +493,7 @@ namespace CodeGenerator
 
             _jSRoot = _modelRoot + @"\JS" + @"\" + _controllerName;
             AdminIndexJSRoot = _jSRoot + @"\" + AdminIndexJSFileName;
+            AdminOlIndexJSRoot = _jSOlRoot + @"\" + AdminIndexJSFileName;
             AdminCreateJSRoot = _jSRoot + @"\" + AdminCreateJSFileName;
             AdminEditJSRoot = _jSRoot + @"\" + AdminEditJSFileName;
 
@@ -1995,13 +2010,13 @@ namespace CodeGenerator
             WriteAdminIndexViewElements(AdminIndexViewRoot);
             WriteAdminListViewElements(AdminListViewRoot);
             btnGenerateAdminIndexJS();
-            //if (chkHaveOtherLanguage.IsChecked == true)
-            //    WriteAdminIndexListOlElements(AdminIndexListOlRoot, _tableName);
+
+            if (chkHaveAdminOlIndexView.IsChecked == true)
+                btnGenerateAdminOlIndexView();
 
             //if (chkHaveAdminIndexViewModel.IsChecked == true)
             //    WriteAdminIndexElements(AdminIndexRoot);
         }
-
         private void WriteAdminIndexViewElements(string fileName)
         {
             using (var sw = File.AppendText(fileName))
@@ -2112,7 +2127,6 @@ namespace CodeGenerator
 
             }
         }
-
         private void WriteAdminListViewElements(string fileName)
         {
             var model = new AdminIndexView()
@@ -2268,6 +2282,243 @@ namespace CodeGenerator
 
 
 
+
+
+
+            }
+        }
+
+
+        // AdminOlIndexView
+        private void btnGenerateAdminOlIndexView()
+        {
+            FillRootDirectory();
+            CheckTempFolder();
+            CheckModelFolder();
+            CheckViewFolder();
+            CheckViewOlFolder();
+            CreateFile(AdminOlIndexViewRoot);
+
+            WriteAdminOlIndexViewElements(AdminOlIndexViewRoot);
+            WriteAdminOlListViewElements(AdminOlListViewRoot);
+            btnGenerateAdminOlIndexJS();
+
+        }
+        private void WriteAdminOlIndexViewElements(string fileName)
+        {
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("@using Panberes.Helpers");
+                sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlIndexName);
+                sw.WriteLine("");
+
+                sw.WriteLine("@section Title{");
+                sw.WriteLine(ModelPersianName);
+                sw.WriteLine("}");
+                sw.WriteLine("@section PageHeader{");
+                sw.WriteLine(" لیست " + ModelPersianName);
+                sw.WriteLine("}");
+                sw.WriteLine("@section RenderStyles{");
+                sw.WriteLine("");
+                sw.WriteLine("}");
+                sw.WriteLine("@section RenderScripts{");
+                sw.WriteLine("");
+                sw.WriteLine("}");
+                sw.WriteLine("");
+
+                sw.WriteLine("@{");
+                sw.WriteLine("    Layout = Url.Content(MVC." + AreaName + ".Shared.Views._" + AreaName + "Layout);");
+                sw.WriteLine("    var lanCount = Model." + _modelName + "List.Count;");
+                sw.WriteLine("");
+                sw.WriteLine("        <script>");
+                sw.WriteLine("        var urlDelete" + _modelName + " = '@Url.Action(MVC." + AreaName + "." +
+                             _controllerName + ".ActionNames.DeleteLanguage, MVC." + AreaName + "." + _controllerName +
+                             ".Name, new { area = MVC." + AreaName + ".Name })';");
+                sw.WriteLine("");
+                sw.WriteLine("    </script>");
+                sw.WriteLine("}");
+                sw.WriteLine("");
+
+                sw.WriteLine(
+                    "<div id=\"bs-example-modal-sm-DeleteContainer\" class=\"modal fade bs-example-modal-sm-DeleteContainer\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" style=\"display: none;\">");
+                sw.WriteLine("</div>");
+                sw.WriteLine("");
+
+
+                sw.WriteLine("<div class=\"col-xs-12 col-md-12\">");
+                sw.WriteLine("    <div class=\"widget\">");
+                sw.WriteLine("        <div class=\"widget-header \">");
+                sw.WriteLine("            <span class=\"widget-caption\" id=\"mahsoolat\">لیست  زبان های دیگر " + ModelPersianName +
+                             "</span>");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("        <div class=\"widget-body\">");
+                sw.WriteLine("            <div class=\"alert alert-info fade in\" @(lanCount == 0 ? \"style=display:block\" : \"style=display:none\") >");
+                sw.WriteLine("                <button class=\"close\" data-dismiss=\"alert\">");
+                sw.WriteLine("                    ×");
+                sw.WriteLine("                </button>");
+                sw.WriteLine("                <i class=\"fa-fw fa fa-info\"></i>");
+                sw.WriteLine("                <strong> " + ModelPersianName + " فاقد زبان دیگری می باشد.</strong>");
+                sw.WriteLine("            </div>");
+
+                sw.WriteLine("            @if (lanCount > 0)");
+                sw.WriteLine("            {");
+
+                sw.WriteLine("            <div id=\"editabledatatable_wrapper\" class=\"dataTables_wrapper form-inline no-footer\">");
+                sw.WriteLine("                <div class=\"ajaxContainer\">");
+                sw.WriteLine("                    @Html.Partial(MVC." + AreaName + "." + _controllerName + "Ol.Views._List, Model)");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("            </div>");
+
+                sw.WriteLine("            }");
+
+                sw.WriteLine("            @if (Model.CanAddNewLanguage)");
+                sw.WriteLine("            {");
+                sw.WriteLine("                <div class=\"row\">");
+                sw.WriteLine("                    <div class=\"col-xs-12 col-md-12\">");
+                sw.WriteLine("                        @Html.EditImageButton(Url.Action(");
+                sw.WriteLine("                            MVC." + AreaName + "." + _controllerName + ".ActionNames.CreateLanguage,");
+                sw.WriteLine("                            MVC." + AreaName + "." + _controllerName + ".Name,");
+                sw.WriteLine("                            new { area = MVC." + AreaName + ".Name, id = Model." + _modelName + "Id }), \"افزودن زبان جدید\", \"style='float: left;margin-top: 10px;'\")");
+                sw.WriteLine("                    </div>");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("            }");
+                sw.WriteLine("");
+
+                sw.WriteLine("        </div>");
+                sw.WriteLine("    </div>");
+                sw.WriteLine("</div>");
+
+                sw.WriteLine("");
+                //sw.WriteLine("@Styles.Render(Url.Content(\"~/assets/css/dataTables.bootstrap.css\"))");
+                //sw.WriteLine("@Scripts.Render(Url.Content(\"~/assets/js/datatable/dataTables.bootstrap.min.js\"))");
+                sw.WriteLine("@Scripts.Render(Url.Content(\"~/Content/ViewJs/Ol" + AreaName + "/" + _controllerName + "/Index.js\"))");
+
+
+
+
+
+            }
+        }
+        private void WriteAdminOlListViewElements(string fileName)
+        {
+            var model = new AdminIndexView()
+            {
+                isHaveHeadButton = true,
+                _items = (ObservableCollection<AdminIndexViewItem>)dgAdminIndexView.ItemsSource
+            };
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("@using " + txtProjectName.Text + ".Helpers");
+                sw.WriteLine("@using " + txtProjectName.Text + ".ViewModels." + _modelName);
+                sw.WriteLine("@using " + txtProjectName.Text + ".ViewModels.Shared");
+                sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlIndexName);
+                sw.WriteLine("");
+
+                sw.WriteLine("@{");
+                sw.WriteLine("    Layout = \"\";");
+                sw.WriteLine("");
+                sw.WriteLine("    string[] headTcss =");
+                sw.WriteLine("    {");
+                for (int i = 0; i < model._items.Count; i++)
+                {
+                    if (!model._items[i].exclude)
+                        sw.WriteLine("        \" " + model._items[i].headTcss + "  \",");
+                }
+                sw.WriteLine("    };");
+
+                sw.WriteLine("    string[] headIcss =");
+                sw.WriteLine("    {");
+                for (int i = 0; i < model._items.Count; i++)
+                {
+                    if (!model._items[i].exclude)
+                        sw.WriteLine("        \" " + model._items[i].headIcss + "  \",");
+                }
+                sw.WriteLine("    };");
+
+                sw.WriteLine("    string[] canFilterFields = null;");
+                sw.WriteLine("    string[] filterFields = null;");
+
+                sw.WriteLine("    string[] headDivcss =");
+                sw.WriteLine("    {");
+                for (int i = 0; i < model._items.Count; i++)
+                {
+                    if (!model._items[i].exclude)
+                        sw.WriteLine("        \" " + model._items[i].headDivcss + "  \",");
+                }
+                sw.WriteLine("    };");
+
+                sw.WriteLine("    string[] canSortFields = null");
+
+                sw.WriteLine(
+                    "    var sortFields = string.IsNullOrEmpty(Model.SortFieldName) ? Html.NameFor(x => x.RowList.First().BaseId).ToString() : Model.SortFieldName;");
+                sw.WriteLine("    var isAsc = Model.IsAsc;");
+                sw.WriteLine("    const string headButtonCssClass = \" " + model.headButtonCssClass + "  \";");
+                sw.WriteLine("    const string deleteButtonId = \"delete" + _modelName + "OlButton\";");
+                sw.WriteLine("    const bool isHaveHeadButton = " + (model.isHaveHeadButton ? "true" : "false") + ";");
+
+                sw.WriteLine("    string[] inclue = new string[]");
+                sw.WriteLine("    {");
+                for (int i = 0; i < model._items.Count; i++)
+                {
+                    if (model._items[i].inclue)
+                    {
+                        sw.WriteLine("        \"" + model._items[i].Key.ToLower() + "\", ");
+                    }
+                }
+                sw.WriteLine("    };");
+
+                sw.WriteLine("    string[] exclude = new string[]");
+                sw.WriteLine("    {");
+                sw.WriteLine("        \"id\", ");
+                sw.WriteLine("        \"BaseId\", ");
+                for (int i = 0; i < model._items.Count; i++)
+                {
+                    if (model._items[i].exclude)
+                    {
+                        sw.WriteLine("        \"" + model._items[i].Key.ToLower() + "\", ");
+                    }
+                }
+                sw.WriteLine("    };");
+
+
+                sw.WriteLine("    var otherButton = new List<Tuple<string, string>>()");
+                sw.WriteLine("    {");
+                sw.WriteLine("");
+                sw.WriteLine("    };");
+
+                sw.WriteLine("    var deleteUrl = Url.Action(MVC." + AreaName + "." + _controllerName +
+                             ".ActionNames.DeleteLanguage, MVC." + AreaName + "." + _controllerName + ".Name, new { area = MVC." +
+                             AreaName + ".Name });");
+                sw.WriteLine("    var editUrl = Url.Action(MVC." + AreaName + "." + _controllerName +
+                             ".ActionNames.EditLanguage, MVC." + AreaName + "." + _controllerName + ".Name, new { area = MVC." +
+                             AreaName + ".Name });");
+
+                sw.WriteLine("}");
+
+
+
+                sw.WriteLine(
+                    "@Html.Partial(MVC.Shared.Views.Partial._Grid, GridEctensions.GenerateGenericList(Model." + _modelName + "List, new " +
+                    AdminOlIndexListName + "(),");
+                sw.WriteLine("    headTcss,");
+                sw.WriteLine("    headIcss,");
+                sw.WriteLine("    filterFields,");
+                sw.WriteLine("    canFilterFields,");
+                sw.WriteLine("    headDivcss,");
+                sw.WriteLine("    sortFields,");
+                sw.WriteLine("    canSortFields,");
+                sw.WriteLine("    isAsc,");
+                sw.WriteLine("    headButtonCssClass,");
+                sw.WriteLine("    deleteButtonId,");
+                sw.WriteLine("    isHaveHeadButton,");
+                sw.WriteLine("    exclude: exclude,");
+                sw.WriteLine("    deleteUrl: deleteUrl,");
+                sw.WriteLine("    detailsUrl: detailsUrl,");
+                sw.WriteLine("    editUrl: editUrl,");
+                sw.WriteLine("    nameUrlButton: otherButton");
+                sw.WriteLine("    ))");
 
 
 
@@ -2854,17 +3105,6 @@ namespace CodeGenerator
 
             WriteAdminIndexJSElements(AdminIndexJSRoot);
         }
-        //private void btnGenerateAdminIndexJS_Click(object sender, RoutedEventArgs e)
-        //{
-        //    FillRootDirectory();
-        //    CheckTempFolder();
-        //    CheckModelFolder();
-        //    CheckJSFolder();
-        //    CreateFile(AdminIndexJSRoot);
-
-        //    WriteAdminIndexJSElements(AdminIndexJSRoot);
-        //}
-
         private void WriteAdminIndexJSElements(string fileName)
         {
             using (var sw = File.AppendText(fileName))
@@ -3085,6 +3325,88 @@ namespace CodeGenerator
             }
         }
 
+        // AdminOlIndexJS
+        private void btnGenerateAdminOlIndexJS()
+        {
+            FillRootDirectory();
+            CheckTempFolder();
+            CheckModelFolder();
+            CheckJSFolder();
+            CreateFile(AdminOlIndexJSRoot);
+
+            WriteAdminOlIndexJSElements(AdminOlIndexJSRoot);
+        }
+        private void WriteAdminOlIndexJSElements(string fileName)
+        {
+            using (var sw = File.AppendText(fileName))
+            {
+
+                sw.WriteLine("");
+
+                sw.WriteLine("(function () {");
+                sw.WriteLine("    $(function () {");
+                sw.WriteLine("        \"use strict \";");
+                sw.WriteLine("");
+
+                sw.WriteLine("");
+                sw.WriteLine("        function delete" + _modelName + "(languageid, rowIndex, objectName) {");
+                sw.WriteLine("");
+                sw.WriteLine("            $.ajax({");
+                sw.WriteLine("                type: \"GET\",");
+                sw.WriteLine("                url: urlDelete" + _modelName + ",");
+                sw.WriteLine("                data:{");
+                sw.WriteLine("                    id: languageid,");
+                sw.WriteLine("                    rowIndex: rowIndex,");
+                sw.WriteLine("                    ObjectName: objectName");
+                sw.WriteLine("                },");
+                sw.WriteLine("                dataType: \"html\",");
+                sw.WriteLine("                success: function (response) {");
+                sw.WriteLine("                    if (response !== '') {");
+                sw.WriteLine("                        $('#bs-example-modal-sm-DeleteContainer').html(response);");
+                sw.WriteLine("");
+                sw.WriteLine("                    } else {");
+                sw.WriteLine("                        ShowModal('danger', 'خطا', 'فرایند با خطا مواجه گردید !', null);");
+                sw.WriteLine("                    }");
+                sw.WriteLine("                },");
+                sw.WriteLine("                error: function (response) {");
+                sw.WriteLine("                    ShowModal('danger', 'خطا', 'فرایند با خطا مواجه گردید !', null);");
+                sw.WriteLine("                }");
+                sw.WriteLine("");
+                sw.WriteLine("            });");
+                sw.WriteLine("");
+                sw.WriteLine("        }");
+                sw.WriteLine("");
+
+                sw.WriteLine("");
+                sw.WriteLine("        $(document).ready(function () {");
+                sw.WriteLine("");
+                sw.WriteLine("            $(document).on(\"click\", \"#delete" + _modelName + "OlButton\", function () {");
+                sw.WriteLine("                var childCount = $($(this).parent().parent()).children().length;");
+                sw.WriteLine("                var cel = $($(this).parent().parent()).children()[childCount - 2];");
+                sw.WriteLine("");
+                sw.WriteLine("                var languageid = $(this).data('rowid');");
+                sw.WriteLine("                var rowindex = $(this).data('rowindex');");
+                sw.WriteLine("");
+                sw.WriteLine("");
+                sw.WriteLine("                delete" + _modelName + "(languageid, rowindex,' زبان ' + ");
+                sw.WriteLine("                     $(cel).text().replace(/(\\r\\n|\\n|\\r)/gm, \"\") );");
+                sw.WriteLine("            });");
+                sw.WriteLine("");
+
+                sw.WriteLine("");
+                sw.WriteLine("");
+                sw.WriteLine("    });");
+                sw.WriteLine("})();");
+
+                sw.WriteLine("");
+
+
+
+
+
+
+            }
+        }
 
 
         // AdminCreateJS
