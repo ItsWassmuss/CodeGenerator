@@ -424,9 +424,8 @@ namespace CodeGenerator
             if (!File.Exists(path))
             {
                 var myFile = File.Create(path);
-
-                var info = new UTF8Encoding(true).GetBytes("//Generate by CodeGenerator ");
-                myFile.Write(info, 0, info.Length);
+                //var info = new UTF8Encoding(true).GetBytes("//Generate by CodeGenerator ");
+                //myFile.Write(info, 0, info.Length);
 
                 myFile.Close();
             }
@@ -517,6 +516,8 @@ namespace CodeGenerator
             AdminOlDetailsViewRoot = _viewRoot + @"\" + AdminOlDetailsViewFileName;
 
             _jSRoot = _modelRoot + @"\JS" + @"\" + _controllerName;
+            _jSOlRoot = _modelRoot + @"\JS" + @"\" + _controllerName + "Ol";
+
             AdminIndexJSRoot = _jSRoot + @"\" + AdminIndexJSFileName;
             AdminOlIndexJSRoot = _jSOlRoot + @"\" + AdminIndexJSFileName;
             AdminCreateJSRoot = _jSRoot + @"\" + AdminCreateJSFileName;
@@ -1022,6 +1023,11 @@ namespace CodeGenerator
                 {
                     Field = x,
                     Display = x,
+                    RequiredMessage = "***** را تکمیل نمایید",
+                    StringLengthMessage = "***** باید حداکثر 1000 کاراکتر باشد",
+                    PhoneMessage = "شماره تلفن صحیح نیست",
+                    RegularExpressionMessage = "",
+                    RangeMessage = "",
 
                 }).ToList());
             TabControlAdminCreateViewModel.ItemsSource = _selectedFieldForAdminCreateObser;
@@ -2238,6 +2244,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headTcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-lg-2 col-sm-2 col-xs-2    \",;");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] headIcss =");
@@ -2247,6 +2254,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headIcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-sm-2   \",;");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canFilterFields = new[]");
@@ -2269,6 +2277,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headDivcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-sm-9   \",;");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canSortFields = new[]");
@@ -2302,6 +2311,7 @@ namespace CodeGenerator
 
                 sw.WriteLine("    string[] exclude = new string[]");
                 sw.WriteLine("    {");
+                sw.WriteLine("        \"BaseId\",");
                 for (int i = 0; i < model._items.Count; i++)
                 {
                     if (model._items[i].exclude)
@@ -2314,6 +2324,9 @@ namespace CodeGenerator
 
                 sw.WriteLine("    var otherButton = new List<Tuple<string, string>>()");
                 sw.WriteLine("    {");
+                sw.WriteLine("        new Tuple<string, string>(");
+                sw.WriteLine("            Url.Action(MVC." + AreaName + "." + _controllerName + ".ActionNames.Languages, MVC." + AreaName + "." + _controllerName + ".Name, new { area = MVC." + AreaName + ".Name }),");
+                sw.WriteLine("            \"زبان\")");
                 sw.WriteLine("");
                 sw.WriteLine("    };");
 
@@ -2477,7 +2490,7 @@ namespace CodeGenerator
                 sw.WriteLine("");
                 //sw.WriteLine("@Styles.Render(Url.Content(\"~/assets/css/dataTables.bootstrap.css\"))");
                 //sw.WriteLine("@Scripts.Render(Url.Content(\"~/assets/js/datatable/dataTables.bootstrap.min.js\"))");
-                sw.WriteLine("@Scripts.Render(Url.Content(\"~/Content/ViewJs/Ol" + AreaName + "/" + _controllerName + "/Index.js\"))");
+                sw.WriteLine("@Scripts.Render(Url.Content(\"~/Content/ViewJs/" + AreaName + "/Ol" + _controllerName + "/Index.js\"))");
 
 
 
@@ -2534,7 +2547,7 @@ namespace CodeGenerator
                 }
                 sw.WriteLine("    };");
 
-                sw.WriteLine("    string[] canSortFields = null");
+                sw.WriteLine("    string[] canSortFields = null;");
 
                 sw.WriteLine(
                     "    var sortFields = string.IsNullOrEmpty(Model.SortFieldName) ? Html.NameFor(x => x.RowList.First().BaseId).ToString() : Model.SortFieldName;");
@@ -2600,7 +2613,6 @@ namespace CodeGenerator
                 sw.WriteLine("    isHaveHeadButton,");
                 sw.WriteLine("    exclude: exclude,");
                 sw.WriteLine("    deleteUrl: deleteUrl,");
-                sw.WriteLine("    detailsUrl: detailsUrl,");
                 sw.WriteLine("    editUrl: editUrl,");
                 sw.WriteLine("    nameUrlButton: otherButton");
                 sw.WriteLine("    ))");
@@ -2657,6 +2669,7 @@ namespace CodeGenerator
             using (var sw = File.AppendText(fileName))
             {
 
+                sw.WriteLine("");
                 sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminCreateName);
                 sw.WriteLine("");
 
@@ -3000,6 +3013,7 @@ namespace CodeGenerator
             using (var sw = File.AppendText(fileName))
             {
 
+                sw.WriteLine("");
                 sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminEditName);
                 sw.WriteLine("");
 
@@ -3213,6 +3227,7 @@ namespace CodeGenerator
             using (var sw = File.AppendText(fileName))
             {
 
+                sw.WriteLine("");
                 sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlEditName);
                 sw.WriteLine("");
 
@@ -3415,7 +3430,7 @@ namespace CodeGenerator
                             sw.WriteLine("                    @Html.DisplayNameFor(model => model." + currentAdmin.Field + ")");
                             sw.WriteLine("                </div>");
                             sw.WriteLine("                <div class=\"col-lg-10 control-label\">");
-                            sw.WriteLine("                    @Html.Raw(model => model." + currentAdmin.Field + ")");
+                            sw.WriteLine("                    @Html.Raw(Model." + currentAdmin.Field + ")");
                             sw.WriteLine("                </div>");
                             sw.WriteLine("            </div>");
                         }
@@ -3515,7 +3530,7 @@ namespace CodeGenerator
                             sw.WriteLine("                                        @Html.DisplayNameFor(model => lan." + currentAdminOl.Field + ")");
                             sw.WriteLine("                                    </div>");
                             sw.WriteLine("                                    <div class=\"col-lg-10 control-label\">");
-                            sw.WriteLine("                                        @Html.Raw(model => lan." + currentAdminOl.Field + ")");
+                            sw.WriteLine("                                        @Html.Raw(lan." + currentAdminOl.Field + ")");
                             sw.WriteLine("                                    </div>");
                             sw.WriteLine("                                </div>");
                         }
@@ -3860,9 +3875,8 @@ namespace CodeGenerator
                 sw.WriteLine("                     $(cel).text().replace(/(\\r\\n|\\n|\\r)/gm, \"\") );");
                 sw.WriteLine("            });");
                 sw.WriteLine("");
-
                 sw.WriteLine("");
-                sw.WriteLine("");
+                sw.WriteLine("        });");
                 sw.WriteLine("    });");
                 sw.WriteLine("})();");
 
