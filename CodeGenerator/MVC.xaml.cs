@@ -2244,7 +2244,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headTcss + "  \",");
                 }
-                sw.WriteLine("        \"  col-lg-2 col-sm-2 col-xs-2    \",;");
+                sw.WriteLine("        \"  col-lg-2 col-sm-2 col-xs-2    \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] headIcss =");
@@ -2254,7 +2254,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headIcss + "  \",");
                 }
-                sw.WriteLine("        \"  col-sm-2   \",;");
+                sw.WriteLine("        \"  col-sm-2   \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canFilterFields = new[]");
@@ -2277,7 +2277,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headDivcss + "  \",");
                 }
-                sw.WriteLine("        \"  col-sm-9   \",;");
+                sw.WriteLine("        \"  col-sm-9   \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canSortFields = new[]");
@@ -2524,6 +2524,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headTcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-lg-2 col-sm-2 col-xs-2    \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] headIcss =");
@@ -2533,6 +2534,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headIcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-sm-2   \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canFilterFields = null;");
@@ -2545,6 +2547,7 @@ namespace CodeGenerator
                     if (!model._items[i].exclude)
                         sw.WriteLine("        \" " + model._items[i].headDivcss + "  \",");
                 }
+                sw.WriteLine("        \"  col-sm-9   \",");
                 sw.WriteLine("    };");
 
                 sw.WriteLine("    string[] canSortFields = null;");
