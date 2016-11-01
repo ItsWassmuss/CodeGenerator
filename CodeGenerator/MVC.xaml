@@ -846,7 +846,7 @@
                                 </DataGrid>
 
                                 <Button Content="Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Margin="544,10,0,0" Click="BtnGenerateAdminDetails_OnClick"/>
-                                <CheckBox x:Name="chkHaveOtherLanguageList"  Content="Is generate other language list ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,0,0,0" Width="250"/>
+                                <CheckBox x:Name="chkHaveOtherLanguageList"   IsChecked="True"  Content="Is generate other language list ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,0,0,0" Width="250"/>
                                 <CheckBox x:Name="chkAdminDetailsView"  IsChecked="True"  Content="Is generate details view ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,21,0,0" Width="250"/>
                                 <CheckBox x:Name="chkAdminDetailsHaveSeo" IsChecked="True"  Content="Is View and Viewmodel have seo ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="289,42,0,0" />
 

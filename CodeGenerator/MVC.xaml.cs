@@ -32,6 +32,8 @@ namespace CodeGenerator
 
         }
 
+        private const string GerationCode = "//Generate by CodeGenerator 2.0.0";
+
         private static readonly List<string> IAdminIndexListNameSpaces = new List<string>
         {
             "using System;",
@@ -683,7 +685,7 @@ namespace CodeGenerator
 
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in IAdminIndexListNameSpaces)
                     sw.WriteLine(str);
@@ -910,7 +912,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminIndexListNameSpaces)
                     sw.WriteLine(str);
@@ -923,7 +925,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminIndexNameSpaces)
                     sw.WriteLine(str);
@@ -1099,7 +1101,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminCreateNameSpaces)
                     sw.WriteLine(str);
@@ -1170,7 +1172,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminCreateNameSpaces)
                     sw.WriteLine(str);
@@ -1354,7 +1356,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminEditNameSpaces)
                     sw.WriteLine(str);
@@ -1438,7 +1440,7 @@ namespace CodeGenerator
                             _selectedFieldForAdminDetailsObser.First(x => x.Field == property["Name"].ToString());
                         //if (!currentAdmin.IsKey)
                         WriteDisplayName(sw, currentAdmin.Display);
-                        sw.WriteLine("        public " + property["Type"] + " " + property["Name"] + " { get; set; }");
+                        sw.WriteLine("        public String " + property["Name"] + " { get; set; }");
                         sw.WriteLine("");
                     }
                 }
@@ -1457,10 +1459,9 @@ namespace CodeGenerator
 
         private void WriteAdminDetailsUsings(string fileName)
         {
-
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminDetailsNameSpaces)
                     sw.WriteLine(str);
@@ -1674,7 +1675,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminOlIndexListNameSpaces)
                     sw.WriteLine(str);
@@ -1687,7 +1688,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminOlIndexNameSpaces)
                     sw.WriteLine(str);
@@ -1855,7 +1856,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminOlCreateNameSpaces)
                     sw.WriteLine(str);
@@ -1993,7 +1994,7 @@ namespace CodeGenerator
         {
             using (var sw = File.AppendText(fileName))
             {
-                sw.WriteLine("//Generate by CodeGenerator 2.0.0");
+                sw.WriteLine(GerationCode);
 
                 foreach (var str in AdminOlEditNameSpaces)
                     sw.WriteLine(str);
@@ -3269,7 +3270,9 @@ namespace CodeGenerator
             var columns = sda.GetTablesColumn(tableName, cmbDatabases.SelectedValue.ToString());
             using (var sw = File.AppendText(fileName))
             {
+                sw.WriteLine(GerationCode);
 
+                sw.WriteLine("@using Panberes.Helpers");
                 sw.WriteLine("@model " + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminDetailsName);
                 sw.WriteLine("");
 
