@@ -147,8 +147,11 @@ namespace CodeGenerator
         private string AdminEditRoot = _viewModelRoot + @"\" + AdminEditFileName;
 
         private static string AdminDetailsName = _modelName + "AdminDetailsViewModel";
+        private static string AdminOlDetailsName = _modelName + "AdminOlDetailsViewModel";
         private static string AdminDetailsFileName = _modelName + "AdminDetailsViewModel.cs";
+        private static string AdminOlDetailsFileName = _modelName + "AdminOlDetailsViewModel.cs";
         private string AdminDetailsRoot = _viewModelRoot + @"\" + AdminDetailsFileName;
+        private string AdminOlDetailsRoot = _viewModelRoot + @"\" + AdminOlDetailsFileName;
 
 
         private static string AdminOlIndexListName = _modelName + "AdminOlIndexListViewModel";
@@ -198,7 +201,9 @@ namespace CodeGenerator
 
 
         private static string AdminDetailsViewFileName = "Details.cshtml";
+        private static string AdminOlDetailsViewFileName = "_Details.cshtml";
         private string AdminDetailsViewRoot = _viewRoot + @"\" + AdminDetailsViewFileName;
+        private string AdminOlDetailsViewRoot = _viewRoot + @"\" + AdminOlDetailsViewFileName;
 
 
 
@@ -462,6 +467,10 @@ namespace CodeGenerator
             AdminDetailsFileName = _modelName + "AdminDetailsViewModel.cs";
             AdminDetailsRoot = _viewModelRoot + @"\" + AdminDetailsFileName;
 
+            AdminOlDetailsName = _modelName + "AdminOlDetailsViewModel";
+            AdminOlDetailsFileName = _modelName + "AdminOlDetailsViewModel.cs";
+            AdminOlDetailsRoot = _viewModelRoot + @"\" + AdminOlDetailsFileName;
+
 
             AdminOlIndexListName = _modelName + "AdminOlIndexListViewModel";
             AdminOlIndexName = _modelName + "AdminOlIndexViewModel";
@@ -505,6 +514,7 @@ namespace CodeGenerator
             AdminOlEditViewRoot = _viewOlRoot + @"\" + AdminEditViewFileName;
 
             AdminDetailsViewRoot = _viewRoot + @"\" + AdminDetailsViewFileName;
+            AdminOlDetailsViewRoot = _viewRoot + @"\" + AdminOlDetailsViewFileName;
 
             _jSRoot = _modelRoot + @"\JS" + @"\" + _controllerName;
             AdminIndexJSRoot = _jSRoot + @"\" + AdminIndexJSFileName;
@@ -1413,6 +1423,19 @@ namespace CodeGenerator
                 CreateFile(AdminDetailsViewRoot);
                 WriteAdminDetailsViewElements(AdminDetailsViewRoot, _tableName);
             }
+
+            if (chkHaveAdminOlDetailsVM.IsChecked == true)
+            {
+                CreateFile(AdminOlDetailsRoot);
+                WriteAdminOlDetailsElements(AdminOlDetailsRoot, _tableName);
+            }
+
+            if (chkHaveAdminOlDetailsView.IsChecked == true)
+            {
+                CreateFile(AdminDetailsViewRoot);
+                WriteAdminOlDetailsViewElements(AdminOlDetailsViewRoot, _tableName);
+            }
+
         }
 
         private void WriteAdminDetailsElements(string fileName, string tableName)
@@ -1456,8 +1479,59 @@ namespace CodeGenerator
 
             }
         }
-
         private void WriteAdminDetailsUsings(string fileName)
+        {
+            using (var sw = File.AppendText(fileName))
+            {
+                sw.WriteLine(GerationCode);
+
+                foreach (var str in AdminDetailsNameSpaces)
+                    sw.WriteLine(str);
+                sw.WriteLine("");
+
+            }
+        }
+
+
+        // AdminOlDetails
+        private void WriteAdminOlDetailsElements(string fileName, string tableName)
+        {
+            WriteAdminOlDetailsUsings(fileName);
+            var sda = SqlDatabaseAdapter;
+
+            using (var sw = File.AppendText(fileName))
+            {
+                var columns = sda.GetTablesColumn(tableName, cmbDatabases.SelectedValue.ToString());
+
+                //namespace
+                sw.WriteLine("namespace " + txtProjectName.Text + "." + "ViewModels" + "." + _modelName);
+                sw.WriteLine("{");
+                sw.WriteLine("    public class " + AdminOlDetailsName + (chkAdminDetailsHaveSeo.IsChecked == true ? " : BaseSeoViewModel" : ""));
+                sw.WriteLine("    {");
+                sw.WriteLine("");
+
+                foreach (DataRow property in columns.Rows)
+                {
+                    if (_selectedFieldForAdminDetailsObser.Any(x => x.Field == property["Name"].ToString() &&
+                        ((string)x.UseType.Content == UseType.justOtherLanguage.ToString() || (string)x.UseType.Content == UseType.Multiple.ToString())))
+                    {
+                        var currentAdminOl = _selectedFieldForAdminDetailsObser.First(x => x.Field == property["Name"].ToString());
+
+                        WriteDisplayName(sw, currentAdminOl.Display);
+                        sw.WriteLine("        public String " + property["Name"] + " { get; set; }");
+                        sw.WriteLine("");
+                    }
+                }
+
+                sw.WriteLine("        public string Language { get; set; }");
+
+                sw.WriteLine("    }");
+                sw.WriteLine("}");
+                sw.WriteLine("");
+
+            }
+        }
+        private void WriteAdminOlDetailsUsings(string fileName)
         {
             using (var sw = File.AppendText(fileName))
             {
@@ -3384,6 +3458,104 @@ namespace CodeGenerator
                     sw.WriteLine("</div>");
                     sw.WriteLine("");
                 }
+
+            }
+        }
+
+        // AdminOlDetailsView
+        private void WriteAdminOlDetailsViewElements(string fileName, string tableName)
+        {
+            var sda = SqlDatabaseAdapter;
+            var columns = sda.GetTablesColumn(tableName, cmbDatabases.SelectedValue.ToString());
+            using (var sw = File.AppendText(fileName))
+            {
+                sw.WriteLine(GerationCode);
+
+                sw.WriteLine("@model List<" + txtProjectName.Text + ".ViewModels." + _modelName + "." + AdminOlDetailsName + ">");
+                sw.WriteLine("");
+
+                sw.WriteLine("    @{");
+                sw.WriteLine("        Layout = \"\";");
+                sw.WriteLine("    }");
+
+                sw.WriteLine("");
+                sw.WriteLine("    @if (Model.Any())");
+                sw.WriteLine("    {");
+                sw.WriteLine("");
+
+                sw.WriteLine("        <div class=\"col-lg-12 col-sm-12 col-xs-12\">");
+                sw.WriteLine("            <div class=\"widget radius-bordered\">");
+                sw.WriteLine("                <div class=\"widget-header\">");
+                sw.WriteLine("                    <span class=\"widget-caption\">زبان های دیگر  " + ModelPersianName + " </span>");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("                <div class=\"widget-body\">");
+                sw.WriteLine("");
+
+                sw.WriteLine("                    @foreach (var lan in Model)");
+                sw.WriteLine("                    {");
+                sw.WriteLine("                        <div class=\"widget radius-bordered\">");
+                sw.WriteLine("                            <div class=\"widget-header\">");
+                sw.WriteLine("                                <span class=\"widget-caption\">زبان : @lan.Language</span>");
+                sw.WriteLine("                            </div>");
+                sw.WriteLine("                            <div class=\"widget-body\">");
+                sw.WriteLine("");
+
+                foreach (DataRow property in columns.Rows)
+                {
+                    if (_selectedFieldForAdminDetailsObser.Any(x => x.Field == property["Name"].ToString() &&
+                        ((string)x.UseType.Content == UseType.justOtherLanguage.ToString() || (string)x.UseType.Content == UseType.Multiple.ToString())))
+                    {
+                        var currentAdminOl =
+                            _selectedFieldForAdminDetailsObser.First(x => x.Field == property["Name"].ToString());
+
+                        if (currentAdminOl.IsHtml)
+                        {
+                            sw.WriteLine("                                <div class=\"form-group row \">");
+                            sw.WriteLine("                                    <div class=\"col-lg-2 control-label\">");
+                            sw.WriteLine("                                        @Html.DisplayNameFor(model => lan." + currentAdminOl.Field + ")");
+                            sw.WriteLine("                                    </div>");
+                            sw.WriteLine("                                    <div class=\"col-lg-10 control-label\">");
+                            sw.WriteLine("                                        @Html.Raw(model => lan." + currentAdminOl.Field + ")");
+                            sw.WriteLine("                                    </div>");
+                            sw.WriteLine("                                </div>");
+                        }
+                        else
+                        {
+                            sw.WriteLine("                                <div class=\"form-group row \">");
+                            sw.WriteLine("                                    <div class=\"col-lg-2 control-label\">");
+                            sw.WriteLine("                                        @Html.DisplayNameFor(model => lan." + currentAdminOl.Field + ")");
+                            sw.WriteLine("                                    </div>");
+                            sw.WriteLine("                                    <div class=\"col-lg-10 control-label\">");
+                            sw.WriteLine("                                        @Html.DisplayFor(model => lan." + currentAdminOl.Field + ")");
+                            sw.WriteLine("                                    </div>");
+                            sw.WriteLine("                                </div>");
+                        }
+
+                        sw.WriteLine("");
+                    }
+                }
+
+                sw.WriteLine("                                <div class=\"form-group row\">");
+                sw.WriteLine("");
+                sw.WriteLine("                                </div>");
+                sw.WriteLine("");
+
+                if (chkAdminDetailsHaveSeo.IsChecked == true)
+                {
+                    sw.WriteLine("                                @Html.Partial(MVC.Shared.Views.Partial._BaseSeoDetailsView, Model)");
+                }
+
+                sw.WriteLine("");
+                sw.WriteLine("                            </div>");
+                sw.WriteLine("                        </div>");
+                sw.WriteLine("                    }");
+                sw.WriteLine("");
+                sw.WriteLine("                </div>");
+                sw.WriteLine("            </div>");
+                sw.WriteLine("        </div>");
+                sw.WriteLine("");
+
+                sw.WriteLine("    }");
 
             }
         }

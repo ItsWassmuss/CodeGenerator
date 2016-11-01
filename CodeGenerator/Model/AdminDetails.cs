@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CodeGenerator.Model
 {
@@ -16,5 +17,6 @@ namespace CodeGenerator.Model
         public string TrueCheckBox { get; set; }
         public string FalseCheckBox { get; set; }
         public bool IsHtml { get; set; }
+        public ComboBoxItem UseType { get; set; }
     }
 }

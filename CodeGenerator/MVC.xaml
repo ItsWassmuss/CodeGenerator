@@ -788,6 +788,8 @@
 
                                 <Button x:Name="btnSelectDetailsField" Content="ChooseFields" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Margin="10,10,0,0" Click="BtnSelectDetailsField_OnClick"/>
                                 <Label Content="Selected field for display in list view as datagrid :" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Height="32"/>
+                                <CheckBox x:Name="chkHaveAdminOlDetailsVM"  IsChecked="True"  Content="Is generate Ol ViewModel ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="544,37,0,0" />
+                                <CheckBox x:Name="chkHaveAdminOlDetailsView"  IsChecked="True"  Content="Is generate Ol View ?" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="544,53,0,0" />
 
                                 <DataGrid x:Name="dgAdminDetails"       
                                             ColumnHeaderStyle="{StaticResource dtGridMainColumnHeader}" 
@@ -807,14 +809,25 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn  Width="*" Header="IsHtml">
+                                        <DataGridTemplateColumn  Width="*" Header="UseType">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox SelectedItem="{Binding UseType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  VerticalAlignment="Top" >
+                                                        <ComboBoxItem Content="justMain" IsSelected="True"></ComboBoxItem>
+                                                        <ComboBoxItem Content="justOtherLanguage"></ComboBoxItem>
+                                                        <ComboBoxItem Content="Multiple"></ComboBoxItem>
+                                                    </ComboBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn  Width="0.5*" Header="IsHtml">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <CheckBox  Content="IsHtml" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsHtml, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn  Width="*" Header="IsImage">
+                                        <DataGridTemplateColumn  Width="0.5*" Header="IsImage">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <CheckBox  Content="IsImage" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsImage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
@@ -1123,9 +1136,6 @@
                         </TabItem>
                     </TabControl>
                 </Grid>
-            </TabItem>
-            <TabItem Header="View">
-                <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Controller">
                 <Grid Background="#FFE5E5E5"/>
