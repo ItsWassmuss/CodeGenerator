@@ -1091,6 +1091,8 @@ namespace CodeGenerator
 
                         WriteFilterPhone(currentAdmin.IsPhone, currentAdmin.PhoneMessage, sw);
 
+                        WriteFilterEmail(currentAdmin.IsEmail, currentAdmin.EmailMessage, sw);
+
                         WriteFilterRange(currentAdmin.IsRange, currentAdmin.MinRange, currentAdmin.MaxRange,
                             currentAdmin.RangeMessage, sw);
 
@@ -1162,6 +1164,8 @@ namespace CodeGenerator
 
                         WriteFilterPhone(currentAdmin.IsPhone, currentAdmin.PhoneMessage, sw);
 
+                        WriteFilterEmail(currentAdmin.IsEmail, currentAdmin.EmailMessage, sw);
+
                         WriteFilterRange(currentAdmin.IsRange, currentAdmin.MinRange, currentAdmin.MaxRange,
                             currentAdmin.RangeMessage, sw);
 
@@ -1219,6 +1223,13 @@ namespace CodeGenerator
             if (isPhone)
                 sw.WriteLine("        [Phone(ErrorMessage = @\"" + phoneMessage + "\")]");
         }
+
+        private void WriteFilterEmail(bool isEmail, string emailMessage, StreamWriter sw)
+        {
+            if (isEmail)
+                sw.WriteLine("        [EmailAddress(ErrorMessage = @\"" + emailMessage + "\")]");
+        }
+
 
         private void WriteFilterScaffoldColumnFalse(bool isScaffoldColumnFalse, StreamWriter sw)
         {
@@ -1342,6 +1353,8 @@ namespace CodeGenerator
                         WriteFilterScaffoldColumnFalse(currentAdmin.IsScaffoldColumnFalse, sw);
 
                         WriteFilterPhone(currentAdmin.IsPhone, currentAdmin.PhoneMessage, sw);
+
+                        WriteFilterEmail(currentAdmin.IsEmail, currentAdmin.EmailMessage, sw);
 
                         WriteFilterRange(currentAdmin.IsRange, currentAdmin.MinRange, currentAdmin.MaxRange,
                             currentAdmin.RangeMessage, sw);
@@ -1905,6 +1918,8 @@ namespace CodeGenerator
 
                         WriteFilterPhone(currentAdmin.IsPhone, currentAdmin.PhoneMessage, sw);
 
+                        WriteFilterEmail(currentAdmin.IsEmail, currentAdmin.EmailMessage, sw);
+
                         WriteFilterRange(currentAdmin.IsRange, currentAdmin.MinRange, currentAdmin.MaxRange,
                             currentAdmin.RangeMessage, sw);
 
@@ -2041,6 +2056,8 @@ namespace CodeGenerator
                         WriteFilterScaffoldColumnFalse(currentAdmin.IsScaffoldColumnFalse, sw);
 
                         WriteFilterPhone(currentAdmin.IsPhone, currentAdmin.PhoneMessage, sw);
+
+                        WriteFilterEmail(currentAdmin.IsEmail, currentAdmin.EmailMessage, sw);
 
                         WriteFilterRange(currentAdmin.IsRange, currentAdmin.MinRange, currentAdmin.MaxRange,
                             currentAdmin.RangeMessage, sw);

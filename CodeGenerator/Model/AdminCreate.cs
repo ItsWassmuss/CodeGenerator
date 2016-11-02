@@ -46,6 +46,9 @@ namespace CodeGenerator.Model
         public string RegularExpressionMessage { get; set; }
         public string Pattern { get; set; }
 
+        public bool IsEmail { get; set; }
+        public string EmailMessage { get; set; }
+
         public bool IsImage { get; set; }
         public bool IsLanguage { get; set; }
         public bool IsUseInOl { get; set; }

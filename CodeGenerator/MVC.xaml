@@ -709,6 +709,13 @@
                                                             <CheckBox x:Name="IsImage" Content="IsImage" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                         </DockPanel>
                                                         <DockPanel >
+                                                            <CheckBox x:Name="CheckBoxEmail" Content="IsEmail" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <DockPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <Label Content="ErrorMessage:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                                                <TextBox TextWrapping="Wrap" Margin="0,3,10,0" Text="{Binding EmailMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                            </DockPanel>
+                                                        </DockPanel>
+                                                        <DockPanel >
                                                             <CheckBox x:Name="IsLanguage" Content="IsLanguage" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding IsLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                         </DockPanel>
                                                         <DockPanel >
